@@ -1,0 +1,10 @@
+{
+    "eslint.workingDirectories": [
+        {
+            "mode": "auto"
+        }
+    ],
+    "npm.enableScriptExplorer": true,
+    "debug.javascript.usePreview": true,
+    "typescript.tsdk": "web/node_modules/typescript/lib"
+}

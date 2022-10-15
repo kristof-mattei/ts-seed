@@ -1,0 +1,15 @@
+FROM node:fermium-alpine
+
+VOLUME ["/web/node_modules"]
+
+VOLUME ["/web"]
+
+WORKDIR /web
+
+RUN apk add --no-cache --virtual .gyp \
+        python \
+        make \
+        g++ \
+        curl
+
+CMD ["sh", "-c", "npm ci ; npm run release:build-serve"]
