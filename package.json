@@ -24,7 +24,7 @@
     "test:lint": "eslint src --ext=ts,tsx",
     "test:lint:ci": "npm run test:lint -- --format=junit --output-file test-results/lint/results.xml",
     "test:lint:fix": "npm run test:lint -- --fix",
-    "prepare": "cd .. && husky install",
+    "prepare": "husky install",
     "test": "jest --watchAll",
     "test:ci": "jest"
   },

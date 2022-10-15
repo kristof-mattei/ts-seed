@@ -15,13 +15,13 @@
             ],
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceFolder}/web/node_modules/**/*.js",
+                "${workspaceFolder}/node_modules/**/*.js",
             ],
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",
                 "!**/node_modules/**"
             ],
-            "cwd": "${workspaceFolder}/web",
+            "cwd": "${workspaceFolder}",
             "env": {
                 "API_PORT": "3000",
                 // "NEW_RELIC_APP_NAME": "ts-seed",
@@ -40,9 +40,9 @@
             "port": 9229,
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceFolder}/web/node_modules/**/*.js",
+                "${workspaceFolder}/node_modules/**/*.js",
             ],
-            "localRoot": "${workspaceFolder}/web",
+            "localRoot": "${workspaceFolder}",
             "remoteRoot": "/web/",
             "env": {
                 "API_PORT": "3000"
@@ -54,7 +54,7 @@
         //     "request": "launch",
         //     "runtimeArgs": [
         //         "--inspect-brk",
-        //         "${workspaceFolder}/web/node_modules/.bin/jest",
+        //         "${workspaceFolder}/node_modules/.bin/jest",
         //         "--runInBand",
         //         "--watchAll",
         //         "--detectOpenHandles",

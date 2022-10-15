@@ -7,28 +7,34 @@ services:
       - ${API_PORT}:${API_PORT}
       - 9229:9229
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:${API_PORT}/health"]
+      test:
+        [
+          "CMD",
+          "curl",
+          "-f",
+          "http://localhost:${API_PORT}/health"
+        ]
       interval: 1m30s
       timeout: 2s
       retries: 3
       start_period: 40s
     build:
-      context: ./web
-      dockerfile: ../Dockerfile-web
-    command: ["sh", "-c", "npm install ; npm run debug:watch"]
+      context: .
+      dockerfile: ./Dockerfile-web
+    command: [ "sh", "-c", "npm install ; npm run debug:watch" ]
     volumes:
-      - ./web:/web
-      - web_node_modules:/web/node_modules
+      - .:/web
+      - node_modules:/web/node_modules
     # networks:
     #   network_name:
     #     ipv4_address: 173.35.0.15
 
-# networks:
-#   network_name:
-#     ipam:
-#       driver: default
-#       config:
-#         - subnet: 173.35.0.0/24
+    # networks:
+    #   network_name:
+    #     ipam:
+    #       driver: default
+    #       config:
+    #         - subnet: 173.35.0.0/24
 
 volumes:
-  web_node_modules:
+  node_modules:
