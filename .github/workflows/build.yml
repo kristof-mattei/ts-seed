@@ -33,7 +33,7 @@ jobs:
           submodules: true
 
       - name: Check if we actually made changes
-        uses: dorny/paths-filter@v1
+        uses: dorny/paths-filter@1cbb925a174b3b91b9ba408bc912aaca905656c0 # tag=v1
         id: filter
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -164,7 +164,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload unit-test results
-        uses: enricomi/publish-unit-test-result-action@v1
+        uses: enricomi/publish-unit-test-result-action@b9f6c61d965bcaa18acc02d6daf706373a448f02 # tag=v1
         with:
           check_name: Unit-test results
           files: reports/unit-tests.xml
