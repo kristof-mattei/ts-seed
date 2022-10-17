@@ -28,7 +28,7 @@ jobs:
       code: ${{ steps.filter.outputs.code }}
     steps:
       - name: Checkout
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
         with:
           submodules: true
 
@@ -47,7 +47,7 @@ jobs:
     if: ${{ needs.changes.outputs.code == 'true' }}
     steps:
       - name: Check out code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
         with:
           submodules: true
 
@@ -75,7 +75,7 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
         with:
           submodules: true
 
@@ -103,7 +103,7 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
         with:
           submodules: true
 
@@ -138,7 +138,7 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
         with:
           submodules: true
           fetch-depth: 0
@@ -191,7 +191,7 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@2541b1294d2704b0964813337f33b291d3f8596b
+        uses: actions/checkout@8230315d06ad95c617244d2f265d237a1682d445
 
       - name: Set up node
         uses: actions/setup-node@eeb10cff27034e7acf239c5d29f62154018672fd
