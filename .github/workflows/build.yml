@@ -33,7 +33,7 @@ jobs:
           submodules: true
 
       - name: Check if we actually made changes
-        uses: dorny/paths-filter@1cbb925a174b3b91b9ba408bc912aaca905656c0 # tag=v1
+        uses: dorny/paths-filter@1cbb925a174b3b91b9ba408bc912aaca905656c0 # tag=v1.1.0
         id: filter
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
