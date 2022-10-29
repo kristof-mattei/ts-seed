@@ -1,4 +1,4 @@
-FROM node:fermium-alpine@sha256:50808db1777e35ca156d06cfd31fa377febe82df6f26b8413a47c12dcbf5e6c5
+FROM node:fermium-alpine@sha256:b953f75739f5ddce593f8b7cf8542bbe5eb6a2a637cdd855fb7444ad4e296e02
 
 VOLUME ["/web/node_modules"]
 
