@@ -160,7 +160,7 @@ jobs:
           JEST_JUNIT_OUTPUT_DIR: reports/
           JEST_JUNIT_OUTPUT_NAME: unit-tests.xml
         run: |
-          npm run test -- --coverage --testLocationInResults --reporters=default --reporters=jest-junit
+          npm run test:ci -- --coverage --testLocationInResults --reporters=default --reporters=jest-junit
         continue-on-error: true
 
       - name: Upload unit-test results
