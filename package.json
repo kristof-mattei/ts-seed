@@ -11,7 +11,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "jest-junit": "^14.0.1",
+    "jest-junit": "^15.0.0",
     "koa": "^2.13.4",
     "source-map-support": "^0.5.21"
   },
@@ -38,7 +38,7 @@
     "@types/node": "^18.11.0",
     "@typescript-eslint/eslint-plugin": "^5.40.0",
     "@typescript-eslint/parser": "^5.40.0",
-    "dependency-cruiser": "^11.16.1",
+    "dependency-cruiser": "^12.0.0",
     "eslint-import-resolver-typescript": "^3.5.1",
     "husky": "^8.0.1",
     "jest": "^29.2.0",
