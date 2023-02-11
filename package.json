@@ -8,7 +8,7 @@
     "@newrelic/koa": "^7.1.1",
     "dotenv": "^16.0.3",
     "eslint": "^8.34.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest-junit": "^15.0.0",
