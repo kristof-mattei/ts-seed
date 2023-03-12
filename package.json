@@ -38,7 +38,7 @@
     "@types/node": "^18.15.0",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
-    "dependency-cruiser": "^12.10.0",
+    "dependency-cruiser": "^12.10.1",
     "eslint-import-resolver-typescript": "^3.5.3",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
