@@ -35,7 +35,7 @@
     "@types/jest": "^29.5.3",
     "@types/koa": "^2.13.6",
     "@types/koa__router": "^12.0.0",
-    "@types/node": "^18.16.20",
+    "@types/node": "^18.17.0",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
     "dependency-cruiser": "^13.1.1",
