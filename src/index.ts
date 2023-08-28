@@ -1,4 +1,3 @@
-// import "@newrelic/koa";
 import type { AddressInfo } from "net";
 
 import { createApp, eventLoopChecker } from "./app";

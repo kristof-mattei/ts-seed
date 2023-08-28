@@ -117,3 +117,8 @@ dist
 
 .DS_Store
 tsconfig.tsbuildinfo
+
+reports
+
+dependency-graph.svg
+dependency-report.html
