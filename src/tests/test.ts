@@ -13,3 +13,9 @@ describe("b", () => {
         expect(performance.now()).not.toBeNull();
     });
 });
+
+describe("c", () => {
+    it("world is ok", () => {
+        expect(true).not.toEqual(false);
+    });
+});
