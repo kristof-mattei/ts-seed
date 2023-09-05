@@ -30,6 +30,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
+          show-progress: false
           submodules: true
 
       - name: Check if we actually made changes
@@ -77,6 +78,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
+          show-progress: false
           submodules: true
 
       - name: Set up node
@@ -105,6 +107,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
+          show-progress: false
           submodules: true
 
       - name: Set up node
@@ -140,6 +143,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
         with:
+          show-progress: false
           submodules: true
           fetch-depth: 0
 
@@ -192,6 +196,8 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0
+        with:
+          show-progress: false
 
       - name: Set up node
         uses: actions/setup-node@5e21ff4d9bc1a8cf6de233a3057d20ec6b3fb69d # v3.8.1
