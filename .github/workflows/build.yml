@@ -166,20 +166,11 @@ jobs:
         run: |
           npm run test:ci
 
-      - name: Setup Code Climate test-reporter
-        shell: bash
-        run: |
-          # download test reporter as a static binary
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-          chmod +x ./cc-test-reporter
-
-      - name: Run code-climate-test-reporter
-        shell: bash
-        env:
-          CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-        run: |
-          ./cc-test-reporter format-coverage coverage/lcov.info --input-type lcov --output reports/codeclimate.json
-          ./cc-test-reporter upload-coverage --input reports/codeclimate.json
+      - name: Upload to Coveralls
+        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2.2.3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage/lcov.info
 
       - name: Fail if tests failed
         shell: bash
