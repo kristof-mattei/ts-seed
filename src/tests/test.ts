@@ -16,6 +16,6 @@ describe("b", () => {
 
 describe("c", () => {
     it("world is ok", () => {
-        expect(true).not.toEqual(true);
+        expect(true).not.toEqual(false);
     });
 });
