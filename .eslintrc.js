@@ -5,7 +5,7 @@ module.exports = {
     overrides: [
         {
             // the TS parser and TS specific rules
-            files: ["src/**/*.ts"],
+            files: ["src/**/*.ts", "*.ts"],
             parser: "@typescript-eslint/parser",
             settings: {
                 "import/resolver": {
