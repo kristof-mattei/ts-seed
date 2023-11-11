@@ -1,0 +1,8 @@
+.vscode
+/*.js
+/app/assets/config/
+/public
+/build
+/config
+node_modules
+tmp
