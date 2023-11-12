@@ -11,7 +11,7 @@
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "debug:watch"
+                "debug"
             ],
             "skipFiles": [
                 "<node_internals>/**",
@@ -42,22 +42,5 @@
                 "API_PORT": "3000"
             }
         }
-        // {
-        //     "name": "Debug Jest Tests",
-        //     "type": "node",
-        //     "request": "launch",
-        //     "runtimeArgs": [
-        //         "--inspect-brk",
-        //         "${workspaceFolder}/node_modules/.bin/jest",
-        //         "--runInBand",
-        //         "--watchAll",
-        //         "--detectOpenHandles",
-        //         "--setupFilesAfterEnv",
-        //         "./jest.setup.local.js"
-        //     ],
-        //     "console": "integratedTerminal",
-        //     "cwd": "${workspaceFolder}/web",
-        //     "internalConsoleOptions": "neverOpen",
-        // },
     ]
 }
