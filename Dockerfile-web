@@ -12,4 +12,4 @@ RUN apk add --no-cache --virtual .gyp \
         g++ \
         curl
 
-CMD ["sh", "-c", "npm ci ; npm run release:build-serve"]
+CMD ["sh", "-c", "npm ci; npm run release; node dist/src/index.js"]
