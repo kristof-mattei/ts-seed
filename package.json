@@ -47,6 +47,9 @@
     "vitest": "0.34.6"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["npm run test:lint:fix", "depcruise --validate -- "]
+    "*.{ts,tsx}": [
+      "npm run test:lint:fix",
+      "depcruise --validate -- "
+    ]
   }
 }
