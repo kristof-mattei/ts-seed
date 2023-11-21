@@ -27,7 +27,7 @@
     "deps:report": "depcruise --output-type err-html --output-to dependency-report.html src"
   },
   "devDependencies": {
-    "@types/koa": "2.13.11",
+    "@types/koa": "2.13.12",
     "@types/koa__router": "12.0.4",
     "@types/node": "20.9.2",
     "@typescript-eslint/eslint-plugin": "6.12.0",
