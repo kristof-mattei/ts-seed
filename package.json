@@ -12,7 +12,7 @@
     "eslint-plugin-prettier": "^5.0.1",
     "koa": "^2.14.2",
     "source-map-support": "^0.5.21",
-    "vite-node": "^1.0.2"
+    "vite-node": "^1.0.3"
   },
   "scripts": {
     "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
@@ -32,7 +32,7 @@
     "@types/node": "20.10.4",
     "@typescript-eslint/eslint-plugin": "6.13.2",
     "@typescript-eslint/parser": "6.13.2",
-    "@vitest/coverage-v8": "1.0.2",
+    "@vitest/coverage-v8": "1.0.3",
     "dependency-cruiser": "15.5.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.6.1",
@@ -44,7 +44,7 @@
     "prettier": "3.1.0",
     "typescript": "5.3.3",
     "vite-tsconfig-paths": "4.2.2",
-    "vitest": "1.0.2"
+    "vitest": "1.0.3"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
