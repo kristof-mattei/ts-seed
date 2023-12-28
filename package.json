@@ -33,7 +33,7 @@
     "@typescript-eslint/eslint-plugin": "6.16.0",
     "@typescript-eslint/parser": "6.16.0",
     "@vitest/coverage-v8": "1.1.0",
-    "dependency-cruiser": "15.5.0",
+    "dependency-cruiser": "16.0.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-import-resolver-webpack": "0.13.8",
