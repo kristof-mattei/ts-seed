@@ -108,6 +108,9 @@
   },
   "include": [
     "src/**/*.ts",
-    "*.ts"
+    "*.ts",
+    ".eslintrc.cjs",
+    ".prettierrc.cjs",
+    ".dependency-cruiser.cjs",
   ]
 }

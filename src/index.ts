@@ -3,7 +3,7 @@ import type { AddressInfo } from "net";
 import { createApp, eventLoopChecker } from "./app";
 
 eventLoopChecker((cycleTime: number) => {
-    return console.log(`We waited for ${cycleTime}`);
+    console.log(`We waited for ${cycleTime}`);
 });
 
 const listener = createApp().listen(process.env["API_PORT"]);
