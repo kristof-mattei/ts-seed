@@ -117,7 +117,6 @@ const esLintConfig = {
         "import/no-duplicates": "error",
         "import/no-unresolved": "error",
         "import/no-relative-packages": "error",
-        "import/no-relative-parent-imports": "error",
         eqeqeq: ["error", "always"],
         "no-fallthrough": "error",
         "no-return-await": "error",
