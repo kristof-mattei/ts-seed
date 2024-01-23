@@ -1,33 +1,48 @@
-// eslint-disable-next-line no-undef
-module.exports = {
-  // parser: , // Specifies the ESLint parser, use default (which can handle JS)
-  env: {},
-  overrides: [
-    {
-      // the TS parser and TS specific rules
-      files: ["src/**/*.ts", "*.ts"],
-      parser: "@typescript-eslint/parser",
-      settings: {
+/** @type { import("eslint").Linter.Config } */
+const esLintConfig = {
+    root: true,
+    parser: "@typescript-eslint/parser",
+    settings: {
+        react: {
+            version: "detect",
+        },
         "import/resolver": {
-          typescript: {}, // this loads <rootdir>/tsconfig.json to eslint
+            node: {
+                extensions: [".d.ts"],
+            },
         },
-      },
-      parserOptions: {
-        sourceType: "module", // Allows for the use of imports
-        ecmaVersion: "latest", // Allows for the parsing of modern ECMAScript features
-        // eslint-disable-next-line no-undef
-        tsconfigRootDir: __dirname,
-        project: "./tsconfig.json",
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      extends: [
-        "plugin:import/typescript",
+    },
+    env: {
+        browser: true,
+        es2022: true,
+    },
+    plugins: [
+        "@typescript-eslint",
+        "import",
+        "react",
+        "react-refresh",
+        "react-hook-form",
+    ],
+    extends: [
+        "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
-        "prettier", // prettier now has built in support for typescript in eslint-config-prettier 8
-      ],
-      rules: {
+        "standard-with-typescript",
+        "plugin:react/jsx-runtime",
+        "plugin:import/typescript",
+        "plugin:react-hook-form/recommended",
+        "plugin:prettier/recommended",
+    ],
+    parserOptions: {
+        sourceType: "module", // Allows for the use of imports
+        ecmaVersion: "latest",
+        project: ["./tsconfig.json", "./tsconfig.node.json"],
+        tsconfigRootDir: __dirname,
+        ecmaFeatures: {
+            jsx: true,
+        },
+    },
+    ignorePatterns: [],
+    rules: {
         "@typescript-eslint/array-type": ["error", { default: "array" }],
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/adjacent-overload-signatures": "error",
@@ -38,32 +53,32 @@ module.exports = {
         "@typescript-eslint/explicit-function-return-type": "error",
         "@typescript-eslint/explicit-member-accessibility": ["error"],
         "@typescript-eslint/naming-convention": [
-          "error",
-          {
-            selector: "enumMember",
-            format: ["camelCase", "PascalCase", "UPPER_CASE"],
-          },
+            "error",
+            {
+                selector: "enumMember",
+                format: ["camelCase", "PascalCase", "UPPER_CASE"],
+            },
         ],
         "@typescript-eslint/member-ordering": [
-          "error",
-          {
-            default: [
-              // Index signature
-              "signature",
-              // Fields
-              "private-field",
-              "public-field",
-              "protected-field",
-              // Constructors
-              "public-constructor",
-              "protected-constructor",
-              "private-constructor",
-              // Methods
-              "public-method",
-              "protected-method",
-              "private-method",
-            ],
-          },
+            "error",
+            {
+                default: [
+                    // Index signature
+                    "signature",
+                    // Fields
+                    "private-field",
+                    "public-field",
+                    "protected-field",
+                    // Constructors
+                    "public-constructor",
+                    "protected-constructor",
+                    "private-constructor",
+                    // Methods
+                    "public-method",
+                    "protected-method",
+                    "private-method",
+                ],
+            },
         ],
         "@typescript-eslint/no-array-constructor": "error",
         "@typescript-eslint/no-empty-interface": "error",
@@ -73,14 +88,17 @@ module.exports = {
         "@typescript-eslint/no-for-in-array": "error",
         "@typescript-eslint/no-misused-promises": "error",
         "@typescript-eslint/no-non-null-assertion": "error",
-        "@typescript-eslint/parameter-properties": ["error", { allow: ["readonly"] }],
+        "@typescript-eslint/parameter-properties": "error",
         "@typescript-eslint/no-require-imports": "error",
         "@typescript-eslint/no-this-alias": "error",
         "@typescript-eslint/no-throw-literal": "error",
         "@typescript-eslint/no-unnecessary-type-assertion": "error",
         "@typescript-eslint/no-unused-expressions": "error",
         "@typescript-eslint/no-useless-constructor": "error",
-        "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_", ignoreRestSiblings: true }],
+        "@typescript-eslint/no-unused-vars": [
+            "error",
+            { argsIgnorePattern: "^_", ignoreRestSiblings: true },
+        ],
         "@typescript-eslint/no-shadow": "error",
         "@typescript-eslint/prefer-for-of": "error",
         "@typescript-eslint/prefer-includes": "error",
@@ -89,87 +107,84 @@ module.exports = {
         "@typescript-eslint/promise-function-async": "off",
         "@typescript-eslint/require-await": "error",
         "@typescript-eslint/restrict-plus-operands": "error",
+        "@typescript-eslint/return-await": "off",
         "@typescript-eslint/sort-type-constituents": "error",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "@typescript-eslint/triple-slash-reference": [
+            "error",
+            { types: "always" },
+        ],
         "@typescript-eslint/unbound-method": "error",
         "@typescript-eslint/unified-signatures": "error",
         "@typescript-eslint/explicit-module-boundary-types": "error",
-      },
+        "react-refresh/only-export-components": [
+            "warn",
+            { allowConstantExport: true },
+        ],
+        "sort-imports": [
+            "error",
+            {
+                ignoreDeclarationSort: true,
+            },
+        ],
+        "import/no-unresolved": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error",
+        eqeqeq: ["error", "always"],
+        "no-fallthrough": "error",
+        "no-return-await": "error",
+        "require-await": "error",
+        "prefer-template": "error",
+        curly: ["error", "all"],
+        "arrow-body-style": ["error", "always"],
+        quotes: [
+            "error",
+            "double",
+            {
+                avoidEscape: true,
+                allowTemplateLiterals: false,
+            },
+        ],
+        "eol-last": ["error", "always"],
+        "object-shorthand": ["error", "always"],
+        "no-useless-rename": [
+            "error",
+            {
+                ignoreDestructuring: false,
+                ignoreImport: false,
+                ignoreExport: false,
+            },
+        ],
+        "class-methods-use-this": "off",
+        // indent: ["error", 4],
+        "max-len": "off",
+        "no-dupe-class-members": "off",
+        "no-extra-semi": "off",
+        "no-new": "off",
+        "no-param-reassign": "off",
+        "no-underscore-dangle": "off",
+        "no-useless-constructor": "off",
+        "no-unused-expressions": "error",
+        "no-restricted-syntax": [
+            "error",
+            "DebuggerStatement",
+            "LabeledStatement",
+            "WithStatement",
+        ],
+        "no-use-before-define": "off",
+        "no-shadow": "off",
+        "import/prefer-default-export": "off",
+        "import/no-cycle": "off",
+        "import/no-extraneous-dependencies": "off",
+        "import/extensions": ["error", "never"],
+        "import/order": [
+            "error",
+            {
+                "newlines-between": "always-and-inside-groups",
+                alphabetize: { order: "asc", caseInsensitive: true },
+            },
+        ],
     },
-  ],
-  extends: [
-    "eslint:recommended",
-    "plugin:prettier/recommended", // Enables eslint-plugin-prettier and displays prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-  ],
-  plugins: ["import"],
-  parserOptions: {
-    ecmaVersion: 2022,
-    sourceType: "module",
-  },
-  ignorePatterns: ["!.prettierrc.js", "!.dependency-cruiser.js"],
-  rules: {
-    "sort-imports": [
-      "error",
-      {
-        ignoreDeclarationSort: true,
-      },
-    ],
-    "import/no-unresolved": "error",
-    "import/newline-after-import": "error",
-    "import/no-duplicates": "error",
-    eqeqeq: 2,
-    "no-fallthrough": "error",
-    "no-return-await": "error",
-    "require-await": "error",
-    "prefer-template": "error",
-    curly: "error",
-    "arrow-body-style": ["error", "always"],
-    quotes: [
-      "error",
-      "double",
-      {
-        avoidEscape: true,
-        allowTemplateLiterals: false,
-      },
-    ],
-    "eol-last": ["error", "always"],
-    "object-shorthand": ["error", "always"],
-    "no-useless-rename": [
-      "error",
-      {
-        ignoreDestructuring: false,
-        ignoreImport: false,
-        ignoreExport: false,
-      },
-    ],
-    "class-methods-use-this": "off",
-    indent: ["error", 4],
-    "max-len": "off",
-    "no-dupe-class-members": "off",
-    "no-extra-semi": "off",
-    "no-new": "off",
-    "no-param-reassign": "off",
-    "no-underscore-dangle": "off",
-    "no-useless-constructor": "off",
-    "no-unused-expressions": "error",
-    "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
-    "no-use-before-define": "off",
-    "no-shadow": "off",
-    "import/prefer-default-export": "off",
-    "import/no-cycle": "off",
-    "import/no-extraneous-dependencies": "off",
-    "import/extensions": ["error", "never"],
-    "import/order": [
-      "error",
-      {
-        "newlines-between": "always-and-inside-groups",
-        alphabetize: { order: "asc", caseInsensitive: true },
-      },
-    ],
-  },
-  settings: {
-    react: {
-      version: "18.0",
-    },
-    ecmaVersion: 2022,
-  },
 };
+
+module.exports = esLintConfig;
