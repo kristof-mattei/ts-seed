@@ -7,6 +7,7 @@ const esLintConfig = {
             node: {
                 extensions: [".d.ts", ".ts"],
             },
+            typescript: {},
         },
     },
     env: {
@@ -112,9 +113,11 @@ const esLintConfig = {
                 ignoreDeclarationSort: true,
             },
         ],
-        "import/no-unresolved": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
+        "import/no-unresolved": "error",
+        "import/no-relative-packages": "error",
+        "import/no-relative-parent-imports": "error",
         eqeqeq: ["error", "always"],
         "no-fallthrough": "error",
         "no-return-await": "error",
