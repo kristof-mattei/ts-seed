@@ -3,33 +3,23 @@ const esLintConfig = {
     root: true,
     parser: "@typescript-eslint/parser",
     settings: {
-        react: {
-            version: "detect",
-        },
         "import/resolver": {
             node: {
-                extensions: [".d.ts"],
+                extensions: [".d.ts", ".ts"],
             },
+            typescript: {},
         },
     },
     env: {
         browser: true,
         es2022: true,
     },
-    plugins: [
-        "@typescript-eslint",
-        "import",
-        "react",
-        "react-refresh",
-        "react-hook-form",
-    ],
+    plugins: ["@typescript-eslint", "import"],
     extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "standard-with-typescript",
-        "plugin:react/jsx-runtime",
         "plugin:import/typescript",
-        "plugin:react-hook-form/recommended",
         "plugin:prettier/recommended",
     ],
     parserOptions: {
@@ -117,19 +107,17 @@ const esLintConfig = {
         "@typescript-eslint/unbound-method": "error",
         "@typescript-eslint/unified-signatures": "error",
         "@typescript-eslint/explicit-module-boundary-types": "error",
-        "react-refresh/only-export-components": [
-            "warn",
-            { allowConstantExport: true },
-        ],
         "sort-imports": [
             "error",
             {
                 ignoreDeclarationSort: true,
             },
         ],
-        "import/no-unresolved": "error",
         "import/newline-after-import": "error",
         "import/no-duplicates": "error",
+        "import/no-unresolved": "error",
+        "import/no-relative-packages": "error",
+        "import/no-relative-parent-imports": "error",
         eqeqeq: ["error", "always"],
         "no-fallthrough": "error",
         "no-return-await": "error",

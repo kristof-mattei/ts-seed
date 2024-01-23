@@ -1,6 +1,6 @@
 import { performance } from "perf_hooks";
 
-import { Foo } from "service/foo";
+import { Foo } from "@/service/foo";
 
 describe("a", () => {
     it("foo is bar", () => {
@@ -16,6 +16,12 @@ describe("b", () => {
 
 describe("c", () => {
     it("world is ok", () => {
+        expect(true).not.toEqual(false);
+    });
+});
+
+describe("d", () => {
+    it("mars is ok", () => {
         expect(true).not.toEqual(false);
     });
 });

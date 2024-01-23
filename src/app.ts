@@ -1,6 +1,6 @@
 import { performance } from "perf_hooks";
 
-import router from "@koa/router";
+import Router from "@koa/router";
 import Koa from "koa";
 
 export function eventLoopChecker(
@@ -24,7 +24,7 @@ export function eventLoopChecker(
 export function createApp(): Koa {
     const app = new Koa();
 
-    const r = new router()
+    const r = new Router()
         .get("/", (ctx: Koa.Context) => {
             ctx.status = 200;
             ctx.body = {
