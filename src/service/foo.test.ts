@@ -19,3 +19,9 @@ describe("c", () => {
         expect(true).not.toEqual(false);
     });
 });
+
+describe("d", () => {
+    it("mars is ok", () => {
+        expect(true).not.toEqual(false);
+    });
+});
