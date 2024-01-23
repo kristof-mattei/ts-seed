@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "dependencies": {
-    "@koa/router": "^12.0.0",
+    "@koa/router": "^12.0.1",
     "dotenv": "^16.3.2",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
@@ -35,6 +35,7 @@
     "@vitest/coverage-v8": "1.2.1",
     "dependency-cruiser": "16.0.0",
     "eslint-config-prettier": "9.1.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
     "eslint-import-resolver-typescript": "3.6.1",
     "eslint-import-resolver-webpack": "0.13.8",
     "eslint-plugin-import": "2.29.1",
