@@ -1,4 +1,4 @@
-FROM node:iron-alpine@sha256:8e6a472eb9742f4f486ca9ef13321b7fc2e54f2f60814f339eeda2aff3037573
+FROM node:iron-alpine@sha256:11f1f115e06d9b2910c254390678e7964eb9faab36674ed621405743d54a9466
 
 VOLUME ["/web/node_modules"]
 
