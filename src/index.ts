@@ -1,6 +1,7 @@
 import type { AddressInfo } from "net";
 
-import { createApp, eventLoopChecker } from "@/app";
+import { createApp } from "@/app";
+import { eventLoopChecker } from "@/utils/eventLoopChecker";
 
 eventLoopChecker((cycleTime: number) => {
     console.log(`We waited for ${cycleTime}`);
