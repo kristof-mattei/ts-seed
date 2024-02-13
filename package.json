@@ -55,6 +55,6 @@
     ]
   },
   "overrides": {
-    "@typescript-eslint/eslint-plugin": "7.0.1"
+    "@typescript-eslint/eslint-plugin": "$@typescript-eslint/eslint-plugin"
   }
 }
