@@ -1,25 +1,5 @@
-import { performance } from "perf_hooks";
-
 import Router from "@koa/router";
 import Koa from "koa";
-
-export function eventLoopChecker(
-    stallDetected: (howLong: number) => void,
-    interval = 100, // How often to check - 100ms
-    threshold = 30, // 30ms
-): void {
-    let start = performance.now();
-
-    setInterval(() => {
-        const delta = performance.now() - start;
-
-        const cycleTime = delta - interval;
-        if (cycleTime > threshold) {
-            stallDetected(cycleTime);
-        }
-        start = performance.now();
-    }, interval).unref();
-}
 
 export function createApp(): Koa {
     const app = new Koa();
