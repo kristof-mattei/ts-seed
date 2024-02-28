@@ -11,8 +11,8 @@ const esLintConfig = {
         },
     },
     env: {
-        browser: true,
-        es2022: true,
+        node: true,
+        // don't add es20xx here, we have emaversion set to latest
     },
     plugins: ["@typescript-eslint", "import"],
     extends: [
@@ -25,10 +25,10 @@ const esLintConfig = {
     parserOptions: {
         sourceType: "module", // Allows for the use of imports
         ecmaVersion: "latest",
-        project: ["./tsconfig.json", "./tsconfig.node.json"],
+        project: ["./tsconfig.json"],
         tsconfigRootDir: __dirname,
         ecmaFeatures: {
-            jsx: true,
+            impliedStrict: true,
         },
     },
     ignorePatterns: [],
@@ -164,7 +164,15 @@ const esLintConfig = {
         "import/prefer-default-export": "off",
         "import/no-cycle": "off",
         "import/no-extraneous-dependencies": "off",
-        "import/extensions": ["error", "never"],
+        "import/extensions": [
+            "error",
+            "never",
+            {
+                pattern: {
+                    json: "always",
+                },
+            },
+        ],
         "import/order": [
             "error",
             {

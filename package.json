@@ -17,6 +17,7 @@
   },
   "scripts": {
     "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
+    "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
     "build": "tsc",
     "lint": "eslint src --ext=ts,tsx",
     "lint:fix": "npm run lint -- --fix",
