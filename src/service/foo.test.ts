@@ -1,8 +1,7 @@
 import { performance } from "perf_hooks";
 
+import { createApp } from "@/app";
 import { Foo } from "@/service/foo";
-
-import { createApp } from "app";
 
 describe("a", () => {
     it("foo is bar", () => {
