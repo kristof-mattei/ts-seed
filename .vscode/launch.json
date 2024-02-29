@@ -9,13 +9,10 @@
             "request": "launch",
             "name": "Launch via NPM",
             "runtimeExecutable": "npm",
-            "runtimeArgs": [
-                "run-script",
-                "debug:watch"
-            ],
+            "runtimeArgs": ["run-script", "debug"],
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceFolder}/node_modules/**/*.js",
+                "${workspaceFolder}/node_modules/**/*.js"
             ],
             "resolveSourceMapLocations": [
                 "${workspaceFolder}/**",
@@ -23,8 +20,10 @@
             ],
             "cwd": "${workspaceFolder}",
             "env": {
-                "API_PORT": "3000",
-            }
+                "API_PORT": "3000"
+            },
+            "internalConsoleOptions": "openOnSessionStart",
+            "console": "internalConsole"
         },
         {
             "type": "node",
@@ -34,30 +33,14 @@
             "port": 9229,
             "skipFiles": [
                 "<node_internals>/**",
-                "${workspaceFolder}/node_modules/**/*.js",
+                "${workspaceFolder}/node_modules/**/*.js"
             ],
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/web/",
             "env": {
                 "API_PORT": "3000"
-            }
+            },
+            "internalConsoleOptions": "openOnSessionStart"
         }
-        // {
-        //     "name": "Debug Jest Tests",
-        //     "type": "node",
-        //     "request": "launch",
-        //     "runtimeArgs": [
-        //         "--inspect-brk",
-        //         "${workspaceFolder}/node_modules/.bin/jest",
-        //         "--runInBand",
-        //         "--watchAll",
-        //         "--detectOpenHandles",
-        //         "--setupFilesAfterEnv",
-        //         "./jest.setup.local.js"
-        //     ],
-        //     "console": "integratedTerminal",
-        //     "cwd": "${workspaceFolder}/web",
-        //     "internalConsoleOptions": "neverOpen",
-        // },
     ]
 }

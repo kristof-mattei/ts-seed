@@ -1,8 +1,5 @@
-.vscode
-/*.js
-/app/assets/config/
-/public
-/build
-/config
+dist
+!.prettierrc.cjs
+!.dependency-cruiser.cjs
 node_modules
 tmp

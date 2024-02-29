@@ -1,34 +1,24 @@
-import { performance } from "perf_hooks";
-
-import router from "@koa/router";
+import Router from "@koa/router";
 import Koa from "koa";
 
-export function eventLoopChecker(
-    stallDetected: (howLong: number) => void,
-    interval = 100, // How often to check - 100ms
-    threshold = 30, // 30ms
-): void {
-    let start = performance.now();
-
-    setInterval(() => {
-        const delta = performance.now() - start;
-
-        const cycleTime = delta - interval;
-        if (cycleTime > threshold) {
-            stallDetected(cycleTime);
-        }
-        start = performance.now();
-    }, interval).unref();
-}
+// NodeJS only supports a default import when importing from JSON
+// so import { contents } from ... does not work
+import solarSystem from "@/resources/solarSystem.json" with { type: "json" };
+import { getRandomIntInclusive } from "@/utils/random";
 
 export function createApp(): Koa {
     const app = new Koa();
 
-    const r = new router()
+    const r = new Router()
         .get("/", (ctx: Koa.Context) => {
             ctx.status = 200;
+
+            const world =
+                solarSystem.contents[
+                    getRandomIntInclusive(0, solarSystem.contents.length)
+                ];
             ctx.body = {
-                message: "Hello World!",
+                message: `Hello ${world}!`,
             };
         })
         .get("/health", (ctx: Koa.Context) => {
