@@ -1,4 +1,4 @@
-FROM node:iron-alpine@sha256:f3299f16246c71ab8b304d6745bb4059fa9283e8d025972e28436a9f9b36ed24
+FROM node:21-alpine3.19@sha256:d3271e4bd89eec4d97087060fd4db0c238d9d22fcfad090a73fa9b5128699888
 
 VOLUME ["/web/node_modules"]
 
@@ -6,10 +6,4 @@ VOLUME ["/web"]
 
 WORKDIR /web
 
-RUN apk add --no-cache --virtual .gyp \
-        python \
-        make \
-        g++ \
-        curl
-
-CMD ["sh", "-c", "npm ci; npm run release; node dist/src/index.js"]
+CMD ["sh", "-c", "npm ci; npm run build; node dist/src/index.js"]
