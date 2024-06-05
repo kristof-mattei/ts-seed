@@ -1,4 +1,4 @@
-FROM node:21.7.3-alpine3.19@sha256:5280e374abb1508c5ca1381bd033ef1c0ad3c745086ca349e6b9ca665299476a
+FROM node:21.7.3-alpine3.19@sha256:521b81ed8878c9e42e2945e7e6bcf7a41c9fb755f1e14ec1e6fe6936506097c4
 
 VOLUME ["/web/node_modules"]
 
