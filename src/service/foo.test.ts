@@ -1,5 +1,6 @@
 import { performance } from "perf_hooks";
 
+import { createApp } from "@/app";
 import { Foo } from "@/service/foo";
 
 describe("a", () => {
@@ -16,7 +17,13 @@ describe("b", () => {
 
 describe("c", () => {
     it("world is ok", () => {
-        expect(true).not.toEqual(false);
+        expect(true).not.toEqual(true);
+    });
+});
+
+describe("d", () => {
+    it("koa", () => {
+        expect(createApp()).not.toEqual(null);
     });
 });
 
