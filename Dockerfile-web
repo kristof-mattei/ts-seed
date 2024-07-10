@@ -1,4 +1,4 @@
-FROM node:20.15.1@sha256:31c08870caeafb05c1e33f7d3d52859b8c106340bbec9798ca3aa699e208ccaf
+FROM node:20.15.1@sha256:786005cf39792f7046bcd66491056c26d2dbcc669c072d1a1e4ef4fcdddd26eb
 
 VOLUME ["/web/node_modules"]
 
