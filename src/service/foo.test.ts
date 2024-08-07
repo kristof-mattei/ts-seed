@@ -1,6 +1,7 @@
 import { performance } from "perf_hooks";
 
 import { Foo } from "@/service/foo";
+import { describe, expect, it } from "vitest";
 
 describe("a", () => {
     it("foo is bar", () => {

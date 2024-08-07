@@ -125,7 +125,7 @@ jobs:
       - name: Run lint
         shell: bash
         run: |
-          npm run lint -- --format=json --output-file reports/lint-report.json
+          npm run lint:ci -- --format=json --output-file reports/lint-report.json
         continue-on-error: true
 
       - name: Annotate Code Linting Results
