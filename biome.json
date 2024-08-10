@@ -173,7 +173,8 @@
             "Dockerfile-web",
             "README.md",
             "package.json",
-            "package-lock.json"
+            "package-lock.json",
+            "tsconfig.json"
         ]
     }
 }
