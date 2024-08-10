@@ -172,6 +172,7 @@
             "docker-compose.yml",
             "Dockerfile-web",
             "README.md",
+            "package.json",
             "package-lock.json"
         ]
     }
