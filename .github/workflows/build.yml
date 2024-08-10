@@ -28,13 +28,13 @@ jobs:
       code: ${{ steps.filter.outputs.code }}
     steps:
       - name: Checkout
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           show-progress: false
           submodules: true
 
       - name: Check if we actually made changes
-        uses: dorny/paths-filter@ebc4d7e9ebcb0b1eb21480bb8f43113e996ac77a # v3.0.1
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
         id: filter
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,12 +48,12 @@ jobs:
     if: ${{ needs.changes.outputs.code == 'true' }}
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           submodules: true
 
       - name: Set up node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -76,13 +76,13 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           show-progress: false
           submodules: true
 
       - name: Set up node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -105,13 +105,13 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           show-progress: false
           submodules: true
 
       - name: Set up node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -125,14 +125,7 @@ jobs:
       - name: Run lint
         shell: bash
         run: |
-          npm run lint -- --format=json --output-file reports/lint-report.json
-        continue-on-error: true
-
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@a1bf7cb320a18aa53cb848a267ce9b7417221526 # 1.2.0
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          report-json: reports/lint-report.json
+          npm run lint:ci -- --reporter=github
 
   npm-test:
     name: Test the code
@@ -141,14 +134,14 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           show-progress: false
           submodules: true
           fetch-depth: 0
 
       - name: Set up node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
@@ -166,11 +159,14 @@ jobs:
         run: |
           npm run test:ci
 
-      - name: Upload to Coveralls
-        uses: coverallsapp/github-action@3dfc5567390f6fa9267c0ee9c251e4c8c3f18949 # v2.2.3
+      - name: Upload coverage results (to Codecov.io)
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: coverage/lcov.info
+          disable_search: true
+          fail_ci_if_error: true
+          files: coverage/coverage-final.json
+          plugins: ""
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Fail if tests failed
         shell: bash
@@ -186,12 +182,12 @@ jobs:
       - warm-up-cache
     steps:
       - name: Check out code
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           show-progress: false
 
       - name: Set up node
-        uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+        uses: actions/setup-node@1e60f620b9541d16bece96c5465dc8ee9832be0b # v4.0.3
         with:
           node-version-file: ".nvmrc"
           cache: "npm"
