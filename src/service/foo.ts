@@ -1,3 +1,3 @@
 export function Foo(): string {
-    return                                       "Bar";	
+    return "Bar";
 }
