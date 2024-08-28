@@ -21,9 +21,9 @@
         "prepare": "husky",
         "test": "vitest --coverage.enabled=true",
         "test:ci": "vitest --coverage.enabled=true --reporter=basic --coverage.reporter=text --coverage.reporter=json",
-        "deps:ci": "depcruise --output-type err src",
-        "deps:graph": "depcruise --output-type dot src | dot -T svg > dependency-graph.svg",
-        "deps:report": "depcruise --output-type err-html --output-to dependency-report.html src"
+        "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
+        "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
+        "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src"
     },
     "devDependencies": {
         "@eslint/compat": "1.1.1",

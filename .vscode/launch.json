@@ -10,14 +10,8 @@
             "name": "Launch via NPM",
             "runtimeExecutable": "npm",
             "runtimeArgs": ["run-script", "debug"],
-            "skipFiles": [
-                "<node_internals>/**",
-                "${workspaceFolder}/node_modules/**/*.js"
-            ],
-            "resolveSourceMapLocations": [
-                "${workspaceFolder}/**",
-                "!**/node_modules/**"
-            ],
+            "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**/*.js"],
+            "resolveSourceMapLocations": ["${workspaceFolder}/**", "!**/node_modules/**"],
             "cwd": "${workspaceFolder}",
             "env": {
                 "API_PORT": "3000"
@@ -31,10 +25,7 @@
             "name": "Attach to Docker Web",
             "address": "localhost",
             "port": 9229,
-            "skipFiles": [
-                "<node_internals>/**",
-                "${workspaceFolder}/node_modules/**/*.js"
-            ],
+            "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**/*.js"],
             "localRoot": "${workspaceFolder}",
             "remoteRoot": "/web/",
             "env": {
