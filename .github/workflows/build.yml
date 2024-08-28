@@ -43,9 +43,6 @@ jobs:
   warm-up-cache:
     name: Warm up the cache
     runs-on: ubuntu-latest
-    needs:
-      - changes
-    if: ${{ needs.changes.outputs.code == 'true' }}
     steps:
       - name: Check out code
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -59,7 +56,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: package-lock.json
 
-      - name: Ensure latest version of npm, older versions v8 have broken caching
+      - name: Ensure latest version of npm, older versions like v8 have broken caching
         shell: bash
         run: |
           npm install --location=global npm@latest
@@ -124,8 +121,23 @@ jobs:
 
       - name: Run lint
         shell: bash
+        id: lint
         run: |
-          npm run lint:ci -- --reporter=github
+          npm run lint -- --format=json --output-file reports/lint-report.json
+        continue-on-error: true
+
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@d57a1193d4c59cbfbf3f86c271f42612f9dbd9e9 # 3.0.0
+        with:
+          report-json: reports/lint-report.json
+
+      - name: Fail if lint failed
+        shell: bash
+        if: |
+          steps.lint.outcome != 'success'
+        run: |
+          echo "Lint failed"
+          exit 1;
 
   npm-test:
     name: Test the code
@@ -155,16 +167,16 @@ jobs:
       - name: Run tests
         shell: bash
         id: tests
-        continue-on-error: true # continue so that we still run analysis
         run: |
-          npm run test:ci
+          npm run test -- --reporter=basic --reporter=github-actions --coverage.reporter=text --coverage.reporter=lcovonly
+        continue-on-error: true
 
       - name: Upload coverage results (to Codecov.io)
         uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
         with:
           disable_search: true
           fail_ci_if_error: true
-          files: coverage/coverage-final.json
+          files: coverage/lcov.info
           plugins: ""
           token: ${{ secrets.CODECOV_TOKEN }}
 
