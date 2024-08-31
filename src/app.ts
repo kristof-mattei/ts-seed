@@ -10,32 +10,30 @@ export function createApp(): Koa {
     const app = new Koa();
 
     const r = new Router()
-        .get("/", (ctx: Koa.Context) => {
-            ctx.status = 200;
+        .get("/", (context: Koa.Context) => {
+            context.status = 200;
 
-            const world =
-                solarSystem.contents[
-                    getRandomIntInclusive(0, solarSystem.contents.length)
-                ];
-            ctx.body = {
+            const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
+
+            context.body = {
                 message: `Hello ${world}!`,
             };
         })
-        .get("/health", (ctx: Koa.Context) => {
-            ctx.status = 200;
-            ctx.body = {
+        .get("/health", (context: Koa.Context) => {
+            context.status = 200;
+            context.body = {
                 status: "ok",
             };
         })
-        .get("/f/:param", (ctx: Koa.Context) => {
-            ctx.status = 200;
-            ctx.body = {
+        .get("/f/:param", (context: Koa.Context) => {
+            context.status = 200;
+            context.body = {
                 status: "ok",
             };
         })
-        .get("/f/:param/blah", (ctx: Koa.Context) => {
-            ctx.status = 200;
-            ctx.body = {
+        .get("/f/:param/blah", (context: Koa.Context) => {
+            context.status = 200;
+            context.body = {
                 status: "ok",
             };
         });

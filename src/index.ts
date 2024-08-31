@@ -1,8 +1,8 @@
-import type { Server } from "http";
-import type { AddressInfo } from "net";
+import type { Server } from "node:http";
+import type { AddressInfo } from "node:net";
 
 import { createApp } from "@/app";
-import { eventLoopChecker } from "@/utils/eventLoopChecker";
+import { eventLoopChecker } from "@/utils/event-loop-checker";
 
 eventLoopChecker((cycleTime: number) => {
     console.log(`We waited for ${cycleTime}`);
@@ -13,7 +13,7 @@ function main(): Server {
 
     const address = listener.address();
 
-    if (!address) {
+    if (address === null) {
         throw new Error("No address, not listening.");
     }
 
@@ -30,7 +30,7 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
 
     let address = addressInfo.address;
 
-    if (addressInfo?.family.toLowerCase() === "ipv6") {
+    if (addressInfo.family.toLowerCase() === "ipv6") {
         address = `[${addressInfo.address}]`;
 
         // this means we've bound to ALL interfaces, so we change it to localhost
@@ -44,7 +44,7 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
 
 const server = main();
 
-if (import.meta.hot) {
+if (import.meta.hot !== undefined) {
     import.meta.hot.on("vite:beforeFullReload", () => {
         console.log("full reload");
         server.close();
