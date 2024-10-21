@@ -26,7 +26,6 @@
         "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src"
     },
     "devDependencies": {
-        "@eslint/compat": "1.2.1",
         "@eslint/eslintrc": "3.1.0",
         "@eslint/js": "9.13.0",
         "@stylistic/eslint-plugin-ts": "2.9.0",
