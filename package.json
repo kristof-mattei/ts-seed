@@ -35,7 +35,7 @@
         "@vitest/coverage-v8": "2.1.5",
         "dependency-cruiser": "16.6.0",
         "eslint": "9.14.0",
-        "eslint-config-love": "99.0.0",
+        "eslint-config-love": "100.0.0",
         "eslint-config-prettier": "9.1.0",
         "eslint-import-resolver-node": "0.3.9",
         "eslint-import-resolver-typescript": "3.6.3",
