@@ -153,6 +153,8 @@ export default tseslint.config(
             ...love.rules,
             ...sharedRules,
 
+            "no-return-await": ["off"],
+
             "@stylistic/ts/no-extra-semi": ["error"],
 
             "@typescript-eslint/consistent-type-imports": [
@@ -193,6 +195,9 @@ export default tseslint.config(
             ], // different than love
             "@typescript-eslint/parameter-properties": ["error"],
             "@typescript-eslint/promise-function-async": ["off"],
+
+            "@typescript-eslint/return-await": ["error", "in-try-catch"],
+
             "@typescript-eslint/require-await": ["error"],
 
             "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
