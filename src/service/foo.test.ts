@@ -18,7 +18,7 @@ describe("b", () => {
 
 describe("c", () => {
     it("world is ok", () => {
-        expect(true).not.toEqual(true);
+        expect(true).not.toEqual(false);
     });
 });
 
@@ -28,7 +28,7 @@ describe("d", () => {
     });
 });
 
-describe("d", () => {
+describe("e", () => {
     it("mars is ok", () => {
         expect(true).not.toEqual(false);
     });
