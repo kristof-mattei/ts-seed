@@ -1,5 +1,5 @@
 // ...
 
-export function foo() {
+export function foo(): void {
     console.log("foo");
 }

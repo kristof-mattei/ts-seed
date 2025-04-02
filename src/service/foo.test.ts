@@ -1,8 +1,9 @@
-import { performance } from "perf_hooks";
+import { performance } from "node:perf_hooks";
+
+import { describe, expect, it } from "vitest";
 
 import { createApp } from "@/app";
 import { Foo } from "@/service/foo";
-import { describe, expect, it } from "vitest";
 
 describe("a", () => {
     it("foo is bar", () => {
