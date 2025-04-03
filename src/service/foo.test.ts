@@ -2,6 +2,7 @@ import { performance } from "node:perf_hooks";
 
 import { describe, expect, it } from "vitest";
 
+import { createApp } from "@/app";
 import { Foo } from "@/service/foo";
 
 describe("a", () => {
@@ -23,6 +24,12 @@ describe("c", () => {
 });
 
 describe("d", () => {
+    it("koa", () => {
+        expect(createApp()).not.toEqual(null);
+    });
+});
+
+describe("e", () => {
     it("mars is ok", () => {
         expect(true).not.toEqual(false);
     });
