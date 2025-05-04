@@ -16,8 +16,8 @@
             "env": {
                 "API_PORT": "3000"
             },
-            "internalConsoleOptions": "openOnSessionStart",
-            "console": "internalConsole"
+            "internalConsoleOptions": "neverOpen",
+            "console": "integratedTerminal"
         },
         {
             "type": "node",
@@ -31,7 +31,7 @@
             "env": {
                 "API_PORT": "3000"
             },
-            "internalConsoleOptions": "openOnSessionStart"
+            "internalConsoleOptions": "neverOpen"
         }
     ]
 }
