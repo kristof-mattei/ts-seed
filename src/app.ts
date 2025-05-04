@@ -1,16 +1,15 @@
-// NodeJS only supports a default import when importing from JSON
-// so import { contents } from ... does not work
+import type { Express } from "express";
 import express from "express";
-import type { Express } from "express-serve-static-core";
 
-import solarSystem from "@/resources/solarSystem.json" with { type: "json" };
+import { contents } from "@/resources/solarSystem.json" with { type: "json" };
+
 import { getRandomIntInclusive } from "@/utils/random";
 
 export function createApp(): Express {
     const app = express();
 
     app.get("/", (_request, response) => {
-        const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
+        const world = contents[getRandomIntInclusive(0, contents.length)];
 
         response.status(200).send({
             message: `Hello ${world}!`,
