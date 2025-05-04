@@ -165,7 +165,7 @@ jobs:
         shell: bash
         id: tests
         run: |
-          npm run test -- --reporter=basic --reporter=github-actions --coverage.reporter=text --coverage.reporter=lcovonly
+          npm run test:ci
         continue-on-error: true
 
       - name: Upload coverage results (to Codecov.io)
