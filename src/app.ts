@@ -1,44 +1,42 @@
-import Router from "@koa/router";
-import Koa from "koa";
-
 // NodeJS only supports a default import when importing from JSON
 // so import { contents } from ... does not work
+import express from "express";
+import type { Express } from "express-serve-static-core";
+
 import solarSystem from "@/resources/solarSystem.json" with { type: "json" };
 import { getRandomIntInclusive } from "@/utils/random";
 
-export function createApp(): Koa {
-    const app = new Koa();
+export function createApp(): Express {
+    const app = express();
 
-    const r = new Router()
-        .get("/", (context: Koa.Context) => {
-            context.status = 200;
+    app.get("/", (_request, response) => {
+        const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
 
-            const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
-
-            context.body = {
-                message: `Hello ${world}!`,
-            };
-        })
-        .get("/health", (context: Koa.Context) => {
-            context.status = 200;
-            context.body = {
-                status: "ok",
-            };
-        })
-        .get("/f/:param", (context: Koa.Context) => {
-            context.status = 200;
-            context.body = {
-                status: "ok",
-            };
-        })
-        .get("/f/:param/blah", (context: Koa.Context) => {
-            context.status = 200;
-            context.body = {
-                status: "ok",
-            };
+        response.status(200).send({
+            message: `Hello ${world}!`,
         });
+    });
 
-    app.use(r.routes());
+    app.get("/health", (_request, response) => {
+        response.status(200).send({
+            status: "ok",
+        });
+    });
+
+    app.get("/f/:param", (request, response) => {
+        response.status(200).send({
+            status: "ok",
+            param_escaped: JSON.stringify(request.params.param),
+        });
+    });
+
+    app.get("/f/:param1/blah/:param2", (request, response) => {
+        response.status(200).send({
+            status: "ok",
+            param1_escaped: JSON.stringify(request.params.param1),
+            param2_escaped: JSON.stringify(request.params.param2),
+        });
+    });
 
     return app;
 }
