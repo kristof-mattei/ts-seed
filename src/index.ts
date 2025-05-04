@@ -45,8 +45,9 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
 const server = main();
 
 if (import.meta.hot !== undefined) {
-    import.meta.hot.on("vite:beforeFullReload", () => {
-        console.log("full reload");
-        server.close();
-    });
+    type Close = () => ReturnType<ReturnType<typeof main>["close"]>;
+    const close: Close = () => server.close();
+
+    import.meta.hot.accept(close);
+    import.meta.hot.dispose(close);
 }
