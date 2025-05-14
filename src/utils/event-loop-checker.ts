@@ -1,17 +1,18 @@
-import { performance } from "node:perf_hooks";
-
 export function eventLoopChecker(
     stallDetected: (howLong: number) => void,
     interval = 100, // How often to check - 100ms
     threshold = 30, // 30ms
-): void {
-    let start = performance.now();
-    setInterval(() => {
-        const delta = performance.now() - start;
+): NodeJS.Timeout {
+    let lastNow = performance.now();
+
+    return setInterval(() => {
+        const delta = performance.now() - lastNow;
         const cycleTime = delta - interval;
+
         if (cycleTime > threshold) {
             stallDetected(cycleTime);
         }
-        start = performance.now();
-    }, interval).unref();
+
+        lastNow = performance.now();
+    }, interval);
 }
