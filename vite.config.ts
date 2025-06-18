@@ -1,6 +1,9 @@
 import path from "node:path";
 
+import { codecovVitePlugin } from "@codecov/vite-plugin";
+
 import type { UserConfig } from "vite";
+import { checker } from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
@@ -26,11 +29,17 @@ export default defineConfig(() => {
         resolve: { alias: { "@/": path.resolve("src/") } },
 
         plugins: [
+            checker({ typescript: true }),
             viteTsConfigPaths(),
             dts({
                 insertTypesEntry: true,
                 entryRoot: "./src",
                 exclude: ["test.setup.ts", "vite.config.ts", "src/tests/**"],
+            }),
+            codecovVitePlugin({
+                enableBundleAnalysis: process.env["CODECOV_TOKEN"] !== undefined,
+                bundleName: "library",
+                uploadToken: process.env["CODECOV_TOKEN"] ?? "",
             }),
         ],
 
@@ -45,6 +54,7 @@ export default defineConfig(() => {
             outputFile: {
                 junit: "./reports/test-report.xml",
             },
+            restoreMocks: true,
             setupFiles: ["./test.setup.ts"],
         },
     };
