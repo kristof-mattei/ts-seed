@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "module",
     "dependencies": {
-        "dotenv": "16.6.0",
+        "dotenv": "16.6.1",
         "express": "5.1.0",
         "source-map-support": "0.5.21",
         "vite-node": "3.2.4"
