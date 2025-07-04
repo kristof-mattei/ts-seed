@@ -24,7 +24,12 @@ const sharedRules = {
     "max-nested-callbacks": ["off"],
     "no-extra-semi": ["off"],
     "no-param-reassign": ["off"],
-    "no-restricted-imports": ["off"],
+    "no-restricted-imports": [
+        "error",
+        {
+            patterns: [".*"],
+        },
+    ],
     "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
     "no-return-await": ["error"],
     "no-shadow": ["error"],
@@ -81,7 +86,7 @@ export default tseslint.config(
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
-    eslintPluginUnicorn.configs["flat/all"],
+    eslintPluginUnicorn.configs["all"],
     {
         languageOptions: {
             parser: tsParser,
@@ -105,7 +110,7 @@ export default tseslint.config(
                 },
             },
         },
-        extends: [eslintPluginUnicorn.configs["flat/recommended"]],
+        extends: [eslintPluginUnicorn.configs["recommended"]],
         rules: {
             ...importPlugin.configs.recommended.rules,
 
@@ -154,6 +159,8 @@ export default tseslint.config(
             ...importPlugin.configs.recommended.rules,
 
             ...sharedRules,
+
+            "no-restricted-imports": ["off"],
 
             "no-return-await": ["off"],
 
