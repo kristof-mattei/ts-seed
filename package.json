@@ -14,16 +14,17 @@
         "format": "prettier --write .",
         "test": "vitest --coverage.enabled=true",
         "test:ci": "vitest --coverage.enabled=true --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly",
-        "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
-        "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
-        "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src"
+        "deps": "depcruise --config dependency-cruiser.config.mjs",
+        "deps:ci": "pnpm run deps --output-type err src",
+        "deps:graph": "pnpm run deps --output-type dot src | dot -T svg > dependency-graph.svg",
+        "deps:report": "pnpm run deps --output-type err-html --output-to dependency-report.html src",
+        "prepare": "husky"
     },
     "engines": {
         "node": ">=22.17.0",
         "pnpm": "9.15.4"
     },
     "dependencies": {
-        "dotenv": "17.0.1",
         "express": "5.1.0",
         "source-map-support": "0.5.21",
         "vite-node": "3.2.4"
@@ -49,6 +50,7 @@
         "eslint-plugin-prettier": "5.5.1",
         "eslint-plugin-promise": "7.2.1",
         "eslint-plugin-unicorn": "59.0.1",
+        "husky": "9.1.7",
         "lint-staged": "16.1.2",
         "prettier": "3.6.2",
         "tsc-alias": "1.8.16",
@@ -62,7 +64,7 @@
     "lint-staged": {
         "*.{ts,tsx}": [
             "pnpm run lint:fix",
-            "depcruise --validate -- "
+            "pnpm run deps --validate -- "
         ]
     },
     "overrides": {}
