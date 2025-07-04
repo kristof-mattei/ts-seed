@@ -6,4 +6,4 @@ VOLUME ["/web"]
 
 WORKDIR /web
 
-CMD ["sh", "-c", "npm ci; npm run build; node dist/src/index.js"]
+CMD ["sh", "-c", "pnpm install --frozen-lockfile; pnpm run build; node dist/src/index.js"]

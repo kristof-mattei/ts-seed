@@ -4,24 +4,29 @@
     "main": "dist/index.js",
     "license": "MIT",
     "type": "module",
-    "dependencies": {
-        "dotenv": "17.0.1",
-        "express": "5.1.0",
-        "source-map-support": "0.5.21",
-        "vite-node": "3.2.4"
-    },
+    "packageManager": "pnpm@9.15.4",
     "scripts": {
         "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
         "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
         "build": "tsc && tsc-alias",
         "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-        "lint:fix": "npm run lint -- --fix",
+        "lint:fix": "pnpm run lint --fix",
         "format": "prettier --write .",
         "test": "vitest --coverage.enabled=true",
         "test:ci": "vitest --coverage.enabled=true --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly",
         "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
         "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
         "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src"
+    },
+    "engines": {
+        "node": ">=22.17.0",
+        "pnpm": "9.15.4"
+    },
+    "dependencies": {
+        "dotenv": "17.0.1",
+        "express": "5.1.0",
+        "source-map-support": "0.5.21",
+        "vite-node": "3.2.4"
     },
     "devDependencies": {
         "@codecov/vite-plugin": "1.9.1",
@@ -48,6 +53,7 @@
         "prettier": "3.6.2",
         "tsc-alias": "1.8.16",
         "typescript": "5.8.3",
+        "vite": "7.0.2",
         "vite-plugin-checker": "0.9.3",
         "vite-plugin-dts": "4.5.4",
         "vite-tsconfig-paths": "5.1.4",
@@ -55,7 +61,7 @@
     },
     "lint-staged": {
         "*.{ts,tsx}": [
-            "npm run lint:fix",
+            "pnpm run lint:fix",
             "depcruise --validate -- "
         ]
     },

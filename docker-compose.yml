@@ -15,7 +15,7 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile-web
-    command: ["sh", "-c", "npm install; npm run debug"]
+    command: ["sh", "-c", "pnpm install; pnpm run debug"]
     volumes:
       - .:/web
       - node_modules:/web/node_modules
