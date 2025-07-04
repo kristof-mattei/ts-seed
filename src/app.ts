@@ -1,15 +1,15 @@
 import type { Express } from "express";
 import express from "express";
 
-import { contents } from "@/resources/solarSystem.json" with { type: "json" };
+import solarSystem from "./resources/solarSystem.json" with { type: "json" };
 
-import { getRandomIntInclusive } from "@/utils/random";
+import { getRandomIntInclusive } from "./utils/random.ts";
 
 export function createApp(): Express {
     const app = express();
 
     app.get("/", (_request, response) => {
-        const world = contents[getRandomIntInclusive(0, contents.length)];
+        const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
 
         response.status(200).send({
             message: `Hello ${world}!`,

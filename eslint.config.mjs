@@ -24,12 +24,7 @@ const sharedRules = {
     "max-nested-callbacks": ["off"],
     "no-extra-semi": ["off"],
     "no-param-reassign": ["off"],
-    "no-restricted-imports": [
-        "error",
-        {
-            patterns: [".*"],
-        },
-    ],
+    "no-restricted-imports": ["off"],
     "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
     "no-return-await": ["error"],
     "no-shadow": ["error"],
@@ -63,6 +58,7 @@ const sharedRules = {
         "never",
         {
             json: "always",
+            ts: "ignorePackages",
         },
     ],
     "import/newline-after-import": ["error"],
