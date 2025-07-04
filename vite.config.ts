@@ -1,5 +1,3 @@
-import path from "node:path";
-
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 
 import type { UserConfig } from "vite";
@@ -16,17 +14,12 @@ export default defineConfig(() => {
         build: {
             sourcemap: true,
             ssr: true,
-            lib: {
-                entry: path.resolve(import.meta.dirname, "src/core.ts"),
-                formats: ["es"],
-            },
             rollupOptions: {
                 output: {
                     preserveModules: true,
                 },
             },
         },
-        resolve: { alias: { "@/": path.resolve("src/") } },
 
         plugins: [
             checker({ typescript: true }),
