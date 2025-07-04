@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   web:
     environment:
@@ -19,6 +18,8 @@ services:
     volumes:
       - .:/web
       - node_modules:/web/node_modules
+      - local_pnpm_store:/web/.pnpm-store
+      - global_pnpm_store:/pnpm/store
     # networks:
     #   network_name:
     #     ipv4_address: 173.35.0.15
@@ -32,3 +33,5 @@ services:
 
 volumes:
   node_modules:
+  local_pnpm_store:
+  global_pnpm_store:
