@@ -1,5 +1,3 @@
-import { codecovVitePlugin } from "@codecov/vite-plugin";
-
 import type { UserConfig } from "vite";
 import { checker } from "vite-plugin-checker";
 import dts from "vite-plugin-dts";
@@ -28,11 +26,6 @@ export default defineConfig(() => {
                 insertTypesEntry: true,
                 entryRoot: "./src",
                 exclude: ["test.setup.ts", "vite.config.ts", "src/tests/**"],
-            }),
-            codecovVitePlugin({
-                enableBundleAnalysis: process.env["CODECOV_TOKEN"] !== undefined,
-                bundleName: "library",
-                uploadToken: process.env["CODECOV_TOKEN"] ?? "",
             }),
         ],
 
