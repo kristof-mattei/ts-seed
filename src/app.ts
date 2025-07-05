@@ -9,11 +9,16 @@ export function createApp(): Express {
     const app = express();
 
     app.get("/", (_request, response) => {
-        const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length)];
+        const world = solarSystem.contents[getRandomIntInclusive(0, solarSystem.contents.length - 1)];
 
         response.status(200).send({
             message: `Hello ${world}!`,
         });
+    });
+
+    app.get("/fail", (_request, _response) => {
+        // to inspect stacktrace
+        throw new Error("OMG WTF BBQ");
     });
 
     app.get("/health", (_request, response) => {
