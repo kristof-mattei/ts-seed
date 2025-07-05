@@ -34,7 +34,7 @@ importers:
         specifier: 22.16.0
         version: 22.16.0
       '@types/source-map-support':
-        specifier: ^0.5.10
+        specifier: 0.5.10
         version: 0.5.10
       '@vitest/coverage-v8':
         specifier: 3.2.4
