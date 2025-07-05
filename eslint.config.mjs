@@ -31,7 +31,6 @@ const sharedRules = {
         },
     ],
     "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
-    "no-return-await": ["error"],
     "no-shadow": ["error"],
     "no-underscore-dangle": ["off"],
     "no-unused-expressions": ["error"],
@@ -161,8 +160,6 @@ export default tseslint.config(
             ...sharedRules,
 
             "no-restricted-imports": ["off"],
-
-            "no-return-await": ["off"],
 
             "@stylistic/ts/no-extra-semi": ["error"],
 
