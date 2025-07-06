@@ -21,6 +21,12 @@ export function createApp(): Express {
         throw new Error("OMG WTF BBQ");
     });
 
+    app.get("/unused", (request, response) => {
+        response.status(200).send({
+            message: `Hello unused!`,
+        });
+    });
+
     app.get("/health", (_request, response) => {
         response.status(200).send({
             status: "ok",

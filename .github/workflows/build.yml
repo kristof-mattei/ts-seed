@@ -104,6 +104,8 @@ jobs:
   npm-lint:
     name: Lint the code
     runs-on: ubuntu-latest
+    # permissions:
+    #   checks: write
     needs:
       - warm-up-cache
     steps:
