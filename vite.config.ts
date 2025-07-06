@@ -33,14 +33,18 @@ export default defineConfig(({ mode }) => {
                 },
             },
         },
-        resolve: { alias: { "@/": nodePath.resolve("src/") } },
+        resolve: {
+            alias: {
+                "@/": nodePath.resolve("src/"),
+            },
+        },
         plugins: [
             viteTsConfigPaths(),
             dts(),
             checker({ typescript: true }),
             codecovVitePlugin({
                 enableBundleAnalysis: environment["CODECOV_TOKEN"] !== undefined,
-                bundleName: "library",
+                bundleName: "ts-seed",
                 uploadToken: environment["CODECOV_TOKEN"] ?? "",
             }),
         ],
@@ -55,7 +59,9 @@ export default defineConfig(({ mode }) => {
                 reportsDirectory: "coverage",
             },
             environment: "node",
-            environmentOptions: {},
+            environmentOptions: {
+                // node: {},
+            },
             globals: false,
             outputFile: {
                 junit: "./reports/test-report.xml",

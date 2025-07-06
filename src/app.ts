@@ -3,7 +3,7 @@ import express from "express";
 
 import { contents } from "@/resources/solarSystem.json" with { type: "json" };
 
-import { getRandomIntInclusive } from "@/utils/random";
+import { getRandomIntInclusive } from "@/utils/random.ts";
 
 export function createApp(): Express {
     const app = express();
