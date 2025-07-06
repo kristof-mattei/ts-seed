@@ -64,11 +64,11 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --fix -- ",
+      "eslint -- ",
       "depcruise --config dependency-cruiser.config.mjs --validate -- "
     ],
     "*": [
-      "prettier --ignore-unknown --write --"
+      "prettier --ignore-unknown --check --"
     ]
   },
   "overrides": {}
