@@ -1,8 +1,8 @@
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 
-import { createApp } from "./app.ts";
-import { eventLoopChecker } from "./utils/event-loop-checker.ts";
+import { createApp } from "@/app";
+import { eventLoopChecker } from "@/utils/event-loop-checker";
 
 eventLoopChecker((cycleTime: number) => {
     console.log(`We waited for ${cycleTime}`);

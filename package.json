@@ -1,71 +1,75 @@
 {
-    "name": "ts-seed-web",
-    "version": "1.0.1",
-    "main": "dist/index.js",
-    "license": "MIT",
-    "type": "module",
-    "packageManager": "pnpm@9.15.9",
-    "scripts": {
-        "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
-        "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
-        "build": "tsc",
-        "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
-        "lint:fix": "pnpm run lint --fix",
-        "format": "prettier --write .",
-        "test": "vitest --coverage.enabled=true",
-        "test:ci": "vitest --coverage.enabled=true --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly",
-        "deps": "depcruise --config dependency-cruiser.config.mjs",
-        "deps:ci": "pnpm run deps --output-type err src",
-        "deps:graph": "pnpm run deps --output-type dot src | dot -T svg > dependency-graph.svg",
-        "deps:report": "pnpm run deps --output-type err-html --output-to dependency-report.html src",
-        "start": "node -r source-map-support/register ./dist/src/index.js",
-        "prepare": "husky"
-    },
-    "engines": {
-        "node": "22.17.0",
-        "pnpm": "9.15.9"
-    },
-    "dependencies": {
-        "express": "5.1.0",
-        "source-map-support": "0.5.21"
-    },
-    "devDependencies": {
-        "@eslint/eslintrc": "3.3.1",
-        "@eslint/js": "9.30.1",
-        "@stylistic/eslint-plugin": "5.1.0",
-        "@types/express": "5.0.3",
-        "@types/node": "22.16.0",
-        "@types/source-map-support": "0.5.10",
-        "@vitest/coverage-v8": "3.2.4",
-        "@vitest/ui": "3.2.4",
-        "dependency-cruiser": "16.10.4",
-        "eslint": "9.30.1",
-        "eslint-config-love": "121.0.0",
-        "eslint-config-prettier": "10.1.5",
-        "eslint-import-resolver-node": "0.3.9",
-        "eslint-import-resolver-typescript": "4.4.4",
-        "eslint-plugin-import": "2.32.0",
-        "eslint-plugin-n": "17.21.0",
-        "eslint-plugin-perfectionist": "4.15.0",
-        "eslint-plugin-prettier": "5.5.1",
-        "eslint-plugin-promise": "7.2.1",
-        "eslint-plugin-unicorn": "59.0.1",
-        "husky": "9.1.7",
-        "lint-staged": "16.1.2",
-        "prettier": "3.6.2",
-        "typescript": "5.8.3",
-        "vite": "7.0.2",
-        "vite-node": "3.2.4",
-        "vite-plugin-checker": "0.9.3",
-        "vite-plugin-dts": "4.5.4",
-        "vite-tsconfig-paths": "5.1.4",
-        "vitest": "3.2.4"
-    },
-    "lint-staged": {
-        "*.{ts,tsx}": [
-            "pnpm run lint:fix",
-            "pnpm run deps --validate -- "
-        ]
-    },
-    "overrides": {}
+  "name": "ts-seed-web",
+  "version": "1.0.1",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@9.15.9",
+  "scripts": {
+    "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
+    "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
+    "build": "vite build",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "pnpm run lint --fix",
+    "format": "prettier --write .",
+    "test": "vitest --coverage.enabled=true",
+    "test:ci": "vitest --coverage.enabled=true --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly",
+    "deps": "depcruise --config dependency-cruiser.config.mjs",
+    "deps:ci": "pnpm run deps --output-type err src",
+    "deps:graph": "pnpm run deps --output-type dot src | dot -T svg > dependency-graph.svg",
+    "deps:report": "pnpm run deps --output-type err-html --output-to dependency-report.html src",
+    "start": "node -r source-map-support/register ./dist/index.js",
+    "prepare": "husky"
+  },
+  "engines": {
+    "node": "22.17.0",
+    "pnpm": "9.15.9"
+  },
+  "dependencies": {
+    "express": "5.1.0",
+    "source-map-support": "0.5.21"
+  },
+  "devDependencies": {
+    "@codecov/vite-plugin": "1.9.1",
+    "@eslint/eslintrc": "3.3.1",
+    "@eslint/js": "9.30.1",
+    "@stylistic/eslint-plugin": "5.1.0",
+    "@types/express": "5.0.3",
+    "@types/node": "22.16.0",
+    "@types/source-map-support": "0.5.10",
+    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/ui": "3.2.4",
+    "dependency-cruiser": "16.10.4",
+    "eslint": "9.30.1",
+    "eslint-config-love": "121.0.0",
+    "eslint-config-prettier": "10.1.5",
+    "eslint-import-resolver-node": "0.3.9",
+    "eslint-import-resolver-typescript": "4.4.4",
+    "eslint-plugin-import": "2.32.0",
+    "eslint-plugin-n": "17.21.0",
+    "eslint-plugin-perfectionist": "4.15.0",
+    "eslint-plugin-prettier": "5.5.1",
+    "eslint-plugin-promise": "7.2.1",
+    "eslint-plugin-unicorn": "59.0.1",
+    "husky": "9.1.7",
+    "lint-staged": "16.1.2",
+    "prettier": "3.6.2",
+    "typescript": "5.8.3",
+    "vite": "6.3.5",
+    "vite-node": "3.2.4",
+    "vite-plugin-checker": "0.9.3",
+    "vite-plugin-dts": "4.5.4",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix -- ",
+      "depcruise --config dependency-cruiser.config.mjs --validate -- "
+    ],
+    "*": [
+      "prettier --ignore-unknown --write --"
+    ]
+  },
+  "overrides": {}
 }
