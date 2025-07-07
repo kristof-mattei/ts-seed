@@ -4,22 +4,18 @@ import { codecovVitePlugin } from "@codecov/vite-plugin";
 import type { UserConfig } from "vite";
 import { loadEnv } from "vite";
 import { checker } from "vite-plugin-checker";
-import dts from "vite-plugin-dts";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
-import package_ from "./package.json";
-
 export default defineConfig(({ mode }) => {
-    const environment = loadEnv(mode, process.cwd());
+    const environment = loadEnv(mode, process.cwd(), "");
 
     const config: UserConfig = {
         appType: "custom",
         build: {
+            ssr: true,
             lib: {
-                entry: nodePath.resolve("src/index.ts"),
-                name: "ts-seed",
-                fileName: (_format, entryName) => `${entryName}.js`,
+                entry: nodePath.resolve(import.meta.dirname, "src/index.ts"),
                 formats: ["es"],
             },
             minify: false,
@@ -27,7 +23,6 @@ export default defineConfig(({ mode }) => {
             emptyOutDir: true,
             sourcemap: true,
             rollupOptions: {
-                external: Object.keys(package_.dependencies),
                 output: {
                     preserveModules: true,
                 },
@@ -35,17 +30,19 @@ export default defineConfig(({ mode }) => {
         },
         resolve: {
             alias: {
-                "@/": nodePath.resolve("src/"),
+                "@/": nodePath.resolve(import.meta.dirname, "src/"),
             },
         },
         plugins: [
-            viteTsConfigPaths(),
-            dts(),
             checker({ typescript: true }),
+            viteTsConfigPaths(),
             codecovVitePlugin({
-                enableBundleAnalysis: environment["CODECOV_TOKEN"] !== undefined,
+                enableBundleAnalysis: environment["GITHUB_ACTIONS"] === "true",
                 bundleName: "ts-seed",
-                uploadToken: environment["CODECOV_TOKEN"] ?? "",
+                oidc: {
+                    useGitHubOIDC: true,
+                },
+                telemetry: false,
             }),
         ],
         optimizeDeps: {
