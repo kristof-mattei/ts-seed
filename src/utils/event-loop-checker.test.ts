@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { eventLoopChecker } from "@/utils/event-loop-checker";
+import { eventLoopChecker } from "@/utils/event-loop-checker.ts";
 
 describe("eventLoopChecker", () => {
     beforeEach(() => {
