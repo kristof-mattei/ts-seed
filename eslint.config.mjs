@@ -115,6 +115,7 @@ export default tseslint.config(
         },
     },
     {
+        ...love,
         files: ["**/*.ts", "**/*.tsx"],
         ignores: ["**/*.mjs"],
         languageOptions: {
@@ -136,10 +137,9 @@ export default tseslint.config(
             perfectionist,
         },
         extends: [
-            ...tseslint.configs.strictTypeChecked,
-            ...tseslint.configs.recommendedTypeChecked,
-            ...tseslint.configs.stylisticTypeChecked,
-            love,
+            tseslint.configs.strictTypeChecked,
+            tseslint.configs.recommendedTypeChecked,
+            tseslint.configs.stylisticTypeChecked,
         ],
         settings: {
             "import/resolver": {
