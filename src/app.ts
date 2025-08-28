@@ -11,6 +11,10 @@ export function createApp(): Express {
     app.get("/", (_request, response) => {
         const world = contents[getRandomIntInclusive(0, contents.length - 1)];
 
+        if (world === undefined) {
+            throw new Error("something went horribly wrong");
+        }
+
         response.status(200).send({
             message: `Hello ${world}!`,
         });
