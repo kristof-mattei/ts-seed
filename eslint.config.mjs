@@ -115,6 +115,7 @@ export default tseslint.config(
         },
     },
     {
+        ...love,
         files: ["**/*.ts", "**/*.tsx"],
         ignores: ["**/*.mjs"],
         languageOptions: {
@@ -136,10 +137,9 @@ export default tseslint.config(
             perfectionist,
         },
         extends: [
-            ...tseslint.configs.strictTypeChecked,
-            ...tseslint.configs.recommendedTypeChecked,
-            ...tseslint.configs.stylisticTypeChecked,
-            love,
+            tseslint.configs.strictTypeChecked,
+            tseslint.configs.recommendedTypeChecked,
+            tseslint.configs.stylisticTypeChecked,
         ],
         settings: {
             "import/resolver": {
@@ -197,6 +197,13 @@ export default tseslint.config(
             ], // different than love
             "@typescript-eslint/parameter-properties": ["error"],
             "@typescript-eslint/promise-function-async": ["off"],
+
+            "@typescript-eslint/restrict-template-expressions": [
+                "error",
+                {
+                    allowNumber: true,
+                },
+            ],
 
             "@typescript-eslint/return-await": ["error", "in-try-catch"],
 
