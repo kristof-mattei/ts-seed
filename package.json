@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@9.15.9",
+  "packageManager": "pnpm@10.15.1",
   "scripts": {
     "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
     "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
@@ -22,8 +22,8 @@
     "prepare": "husky"
   },
   "engines": {
-    "node": "22.19.0",
-    "pnpm": "9.15.9"
+    "node": "24.7.0",
+    "pnpm": "10.15.1"
   },
   "dependencies": {
     "express": "5.1.0",
@@ -35,7 +35,7 @@
     "@eslint/js": "9.35.0",
     "@stylistic/eslint-plugin": "5.3.1",
     "@types/express": "5.0.3",
-    "@types/node": "22.18.1",
+    "@types/node": "24.3.1",
     "@types/source-map-support": "0.5.10",
     "@vitest/coverage-v8": "3.2.4",
     "@vitest/ui": "3.2.4",
