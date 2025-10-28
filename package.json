@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@10.19.0",
+  "packageManager": "pnpm@10.20.0",
   "scripts": {
     "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
     "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
@@ -23,7 +23,7 @@
   },
   "engines": {
     "node": "24.11.0",
-    "pnpm": "10.19.0"
+    "pnpm": "10.20.0"
   },
   "dependencies": {
     "express": "5.1.0",
