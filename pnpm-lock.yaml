@@ -103,8 +103,8 @@ importers:
         specifier: 7.2.2
         version: 7.2.2(@types/node@24.10.1)(yaml@2.8.1)
       vite-node:
-        specifier: 5.0.0
-        version: 5.0.0(@types/node@24.10.1)(yaml@2.8.1)
+        specifier: 5.1.0
+        version: 5.1.0(@types/node@24.10.1)(yaml@2.8.1)
       vite-plugin-checker:
         specifier: 0.11.0
         version: 0.11.0(eslint@9.39.1)(optionator@0.9.4)(typescript@5.9.3)(vite@7.2.2(@types/node@24.10.1)(yaml@2.8.1))
@@ -2740,8 +2740,8 @@ packages:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
 
-  vite-node@5.0.0:
-    resolution: {integrity: sha512-nJINVH7lHBKoyDFYnwrXbNUrmTJ2ssBHTd/mXVZfLq/O5K7ksv4CayQOA5KkbOSrsgSQg8antcVPgQmzBWWn/w==}
+  vite-node@5.1.0:
+    resolution: {integrity: sha512-ci+CXFFrQfRgdO0WDSKNQ28OOglURJUw2hVlfir4IA+Q2nHKmU/qIbmiYO7oB8CZvvSoyCmHycXz5MiX03BrsQ==}
     engines: {node: ^18.0.0 || ^20.0.0 || >=22.0.0}
     hasBin: true
 
@@ -5794,7 +5794,7 @@ snapshots:
 
   vary@1.1.2: {}
 
-  vite-node@5.0.0(@types/node@24.10.1)(yaml@2.8.1):
+  vite-node@5.1.0(@types/node@24.10.1)(yaml@2.8.1):
     dependencies:
       cac: 6.7.14
       debug: 4.4.3
