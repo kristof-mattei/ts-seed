@@ -38,7 +38,7 @@
     "@types/express": "5.0.6",
     "@types/node": "24.10.1",
     "@types/source-map-support": "0.5.10",
-    "@typescript-eslint/parser": "8.48.0",
+    "@typescript-eslint/parser": "8.48.1",
     "@vitest/coverage-v8": "4.0.14",
     "@vitest/ui": "4.0.14",
     "dependency-cruiser": "17.3.2",
