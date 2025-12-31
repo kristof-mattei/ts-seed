@@ -2,9 +2,8 @@ import { performance } from "node:perf_hooks";
 
 import { describe, expect, it } from "vitest";
 
-import { createApp } from "../app.ts";
-
-import { Foo } from "./foo.ts";
+import { createApp } from "@/app.ts";
+import { Foo } from "@/service/foo.ts";
 
 describe("a", () => {
     it("foo is bar", () => {

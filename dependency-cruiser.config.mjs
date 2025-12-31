@@ -375,4 +375,4 @@ export default {
         },
     },
 };
-// generated: dependency-cruiser@16.10.3 on 2025-06-25T15:50:42.863Z
+// generated: dependency-cruiser@16.10.4 on 2025-07-08T20:45:22.690Z
