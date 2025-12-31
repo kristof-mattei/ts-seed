@@ -1,14 +1,13 @@
 import js from "@eslint/js";
+import commentsPlugin from "@eslint-community/eslint-plugin-eslint-comments";
 import stylistic from "@stylistic/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
-import commentsPlugin from "eslint-plugin-eslint-comments";
 import importPlugin from "eslint-plugin-import";
 import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
 import promise from "eslint-plugin-promise";
-
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
 import tseslint from "typescript-eslint";
 
@@ -31,7 +30,6 @@ const sharedRules = {
         },
     ],
     "no-restricted-syntax": ["error", "DebuggerStatement", "LabeledStatement", "WithStatement"],
-    "no-return-await": ["error"],
     "no-shadow": ["error"],
     "no-underscore-dangle": ["off"],
     "no-unused-expressions": ["error"],
@@ -60,9 +58,11 @@ const sharedRules = {
 
     "import/extensions": [
         "error",
-        "never",
+        "ignorePackages",
         {
             json: "always",
+            ts: "always",
+            tsx: "always",
         },
     ],
     "import/newline-after-import": ["error"],
@@ -85,7 +85,7 @@ export default tseslint.config(
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
-    eslintPluginUnicorn.configs["flat/all"],
+    eslintPluginUnicorn.configs["all"],
     {
         languageOptions: {
             parser: tsParser,
@@ -101,15 +101,13 @@ export default tseslint.config(
         },
         settings: {
             "import/resolver": {
-                node: {
-                    extensions: [".d.ts", ".ts"],
-                },
+                node: {},
                 typescript: {
                     alwaysTryTypes: true,
                 },
             },
         },
-        extends: [eslintPluginUnicorn.configs["flat/recommended"]],
+        extends: [eslintPluginUnicorn.configs["recommended"]],
         rules: {
             ...importPlugin.configs.recommended.rules,
 
@@ -117,13 +115,13 @@ export default tseslint.config(
         },
     },
     {
+        ...love,
         files: ["**/*.ts", "**/*.tsx"],
         ignores: ["**/*.mjs"],
         languageOptions: {
             parser: tsParser,
             parserOptions: {
                 ecmaVersion: "latest",
-                project: "./tsconfig.json",
                 projectService: true,
                 sourceType: "module", // Allows for the use of imports
                 tsconfigRootDir: import.meta.dirname,
@@ -138,16 +136,13 @@ export default tseslint.config(
             perfectionist,
         },
         extends: [
-            ...tseslint.configs.strictTypeChecked,
-            ...tseslint.configs.recommendedTypeChecked,
-            ...tseslint.configs.stylisticTypeChecked,
-            love,
+            tseslint.configs.strictTypeChecked,
+            tseslint.configs.recommendedTypeChecked,
+            tseslint.configs.stylisticTypeChecked,
         ],
         settings: {
             "import/resolver": {
-                node: {
-                    extensions: [".ts"],
-                },
+                node: {},
                 typescript: {
                     alwaysTryTypes: true,
                 },
@@ -159,7 +154,7 @@ export default tseslint.config(
 
             ...sharedRules,
 
-            "no-return-await": ["off"],
+            "no-restricted-imports": ["off"],
 
             "@stylistic/ts/no-extra-semi": ["error"],
 
@@ -170,8 +165,7 @@ export default tseslint.config(
                     fixStyle: "separate-type-imports",
                     prefer: "type-imports",
                 },
-            ],
-            // different than love
+            ], // different than love
             "@typescript-eslint/prefer-destructuring": ["off"],
             "@typescript-eslint/explicit-member-accessibility": ["error"],
             "@typescript-eslint/explicit-module-boundary-types": ["error"],
@@ -202,6 +196,13 @@ export default tseslint.config(
             ], // different than love
             "@typescript-eslint/parameter-properties": ["error"],
             "@typescript-eslint/promise-function-async": ["off"],
+
+            "@typescript-eslint/restrict-template-expressions": [
+                "error",
+                {
+                    allowNumber: true,
+                },
+            ],
 
             "@typescript-eslint/return-await": ["error", "in-try-catch"],
 

@@ -3,17 +3,26 @@ import express from "express";
 
 import { contents } from "@/resources/solarSystem.json" with { type: "json" };
 
-import { getRandomIntInclusive } from "@/utils/random";
+import { getRandomIntInclusive } from "@/utils/random.ts";
 
 export function createApp(): Express {
     const app = express();
 
     app.get("/", (_request, response) => {
-        const world = contents[getRandomIntInclusive(0, contents.length)];
+        const world = contents[getRandomIntInclusive(0, contents.length - 1)];
+
+        if (world === undefined) {
+            throw new Error("something went horribly wrong");
+        }
 
         response.status(200).send({
             message: `Hello ${world}!`,
         });
+    });
+
+    app.get("/fail", (_request, _response) => {
+        // to inspect stacktrace
+        throw new Error("OMG WTF BBQ");
     });
 
     app.get("/health", (_request, response) => {
