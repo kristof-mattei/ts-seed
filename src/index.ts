@@ -46,7 +46,9 @@ const server = main();
 
 if (import.meta.hot !== undefined) {
     type Close = () => ReturnType<ReturnType<typeof main>["close"]>;
-    const close: Close = () => server.close();
+    const close: Close = () => {
+        return server.close();
+    };
 
     import.meta.hot.accept(close);
     import.meta.hot.dispose(close);
