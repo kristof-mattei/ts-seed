@@ -4,13 +4,13 @@ import commentsPlugin from "@eslint-community/eslint-plugin-eslint-comments";
 import stylistic from "@stylistic/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
-import importPlugin, { configs as importPluginConfigs } from "eslint-plugin-import-x";
+import { configs as importPluginConfigs, flatConfigs as importPluginsFlatConfigs } from "eslint-plugin-import-x";
 import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
 import promise from "eslint-plugin-promise";
 import eslintPluginUnicorn from "eslint-plugin-unicorn";
-import tseslint from "typescript-eslint";
+import { configs as tseslintConfigs } from "typescript-eslint";
 
 const sharedRules = {
     "arrow-body-style": ["error", "always"],
@@ -84,6 +84,9 @@ const sharedRules = {
 export default defineConfig(
     prettier,
     js.configs.recommended,
+    importPluginsFlatConfigs.recommended,
+    importPluginsFlatConfigs.typescript,
+
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
     },
@@ -98,9 +101,7 @@ export default defineConfig(
                 tsconfigRootDir: import.meta.dirname,
             },
         },
-        plugins: {
-            "import-x": importPlugin,
-        },
+        plugins: {},
         settings: {
             "import-x/resolver": {
                 node: {},
@@ -131,16 +132,15 @@ export default defineConfig(
         },
         plugins: {
             "@stylistic/ts": stylistic,
-            "import-x": importPlugin,
             n: nPlugin,
             "eslint-comments": commentsPlugin,
             promise,
             perfectionist,
         },
         extends: [
-            tseslint.configs.strictTypeChecked,
-            tseslint.configs.recommendedTypeChecked,
-            tseslint.configs.stylisticTypeChecked,
+            tseslintConfigs.strictTypeChecked,
+            tseslintConfigs.recommendedTypeChecked,
+            tseslintConfigs.stylisticTypeChecked,
         ],
         settings: {
             "import-x/resolver": {
@@ -218,7 +218,7 @@ export default defineConfig(
     },
 
     {
-        extends: [tseslint.configs.disableTypeChecked],
+        extends: [tseslintConfigs.disableTypeChecked],
         files: ["*.mjs"],
         rules: {},
     },
