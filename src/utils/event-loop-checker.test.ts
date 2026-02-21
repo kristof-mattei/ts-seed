@@ -6,7 +6,9 @@ describe("eventLoopChecker", () => {
     beforeEach(() => {
         vi.useFakeTimers();
 
-        performance.now = vi.fn(() => 0);
+        performance.now = vi.fn(() => {
+            return 0;
+        });
     });
 
     it("eventLoopChecker has sane defaults", () => {
@@ -17,7 +19,9 @@ describe("eventLoopChecker", () => {
         });
 
         // now we stall for 100ms
-        performance.now = vi.fn(() => 100);
+        performance.now = vi.fn(() => {
+            return 100;
+        });
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -37,7 +41,9 @@ describe("eventLoopChecker", () => {
         });
 
         // now we stall for 100ms
-        performance.now = vi.fn(() => 131);
+        performance.now = vi.fn(() => {
+            return 131;
+        });
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -59,7 +65,9 @@ describe("eventLoopChecker", () => {
         );
 
         // now we stall for 101ms
-        performance.now = vi.fn(() => 101);
+        performance.now = vi.fn(() => {
+            return 101;
+        });
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -81,7 +89,9 @@ describe("eventLoopChecker", () => {
         );
 
         // now we stall for 101ms
-        performance.now = vi.fn(() => 150);
+        performance.now = vi.fn(() => {
+            return 150;
+        });
 
         // tick event loop
         vi.advanceTimersToNextTimer();

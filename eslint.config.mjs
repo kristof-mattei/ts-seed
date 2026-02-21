@@ -1,9 +1,10 @@
+import { defineConfig, globalIgnores } from "@eslint/config-helpers";
 import js from "@eslint/js";
 import commentsPlugin from "@eslint-community/eslint-plugin-eslint-comments";
 import stylistic from "@stylistic/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import love from "eslint-config-love";
-import importPlugin from "eslint-plugin-import";
+import importPlugin, { configs as importPluginConfigs } from "eslint-plugin-import-x";
 import nPlugin from "eslint-plugin-n";
 import perfectionist from "eslint-plugin-perfectionist";
 import prettier from "eslint-plugin-prettier/recommended";
@@ -56,7 +57,7 @@ const sharedRules = {
     "unicorn/no-null": ["off"],
     "unicorn/prefer-ternary": ["off"],
 
-    "import/extensions": [
+    "import-x/extensions": [
         "error",
         "ignorePackages",
         {
@@ -65,22 +66,24 @@ const sharedRules = {
             tsx: "always",
         },
     ],
-    "import/newline-after-import": ["error"],
-    "import/no-cycle": ["off"],
-    "import/no-extraneous-dependencies": ["off"],
-    "import/no-relative-packages": ["error"],
-    "import/no-unresolved": ["error"],
-    "import/order": [
+    "import-x/newline-after-import": ["error"],
+    "import-x/no-cycle": ["off"],
+    "import-x/no-extraneous-dependencies": ["off"],
+    "import-x/no-relative-packages": ["error"],
+    "import-x/no-unresolved": ["error"],
+    "import-x/order": [
         "error",
         {
             alphabetize: { caseInsensitive: true, order: "asc" },
             "newlines-between": "always-and-inside-groups",
         },
     ],
-    "import/prefer-default-export": ["off"],
+    "import-x/prefer-default-export": ["off"],
 };
 
-export default tseslint.config(
+export default defineConfig(
+    globalIgnores([".local/*"]),
+    prettier,
     js.configs.recommended,
     {
         ignores: ["dist/**", "reports/**", "coverage/**"],
@@ -97,10 +100,10 @@ export default tseslint.config(
             },
         },
         plugins: {
-            import: importPlugin,
+            "import-x": importPlugin,
         },
         settings: {
-            "import/resolver": {
+            "import-x/resolver": {
                 node: {},
                 typescript: {
                     alwaysTryTypes: true,
@@ -109,7 +112,7 @@ export default tseslint.config(
         },
         extends: [eslintPluginUnicorn.configs["recommended"]],
         rules: {
-            ...importPlugin.configs.recommended.rules,
+            ...importPluginConfigs.recommended.rules,
 
             ...sharedRules,
         },
@@ -129,7 +132,7 @@ export default tseslint.config(
         },
         plugins: {
             "@stylistic/ts": stylistic,
-            import: importPlugin,
+            "import-x": importPlugin,
             n: nPlugin,
             "eslint-comments": commentsPlugin,
             promise,
@@ -141,7 +144,7 @@ export default tseslint.config(
             tseslint.configs.stylisticTypeChecked,
         ],
         settings: {
-            "import/resolver": {
+            "import-x/resolver": {
                 node: {},
                 typescript: {
                     alwaysTryTypes: true,
@@ -149,8 +152,8 @@ export default tseslint.config(
             },
         },
         rules: {
-            ...importPlugin.configs.typescript.rules,
-            ...importPlugin.configs.recommended.rules,
+            ...importPluginConfigs.typescript.rules,
+            ...importPluginConfigs.recommended.rules,
 
             ...sharedRules,
 
@@ -208,7 +211,7 @@ export default tseslint.config(
 
             "@typescript-eslint/require-await": ["error"],
 
-            "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
+            "import-x/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
             "perfectionist/sort-intersection-types": ["error"],
             "perfectionist/sort-union-types": ["error"],
@@ -220,5 +223,4 @@ export default tseslint.config(
         files: ["*.mjs"],
         rules: {},
     },
-    prettier,
 );
