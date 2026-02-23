@@ -33,7 +33,7 @@
     "@codecov/vite-plugin": "1.9.1",
     "@eslint-community/eslint-plugin-eslint-comments": "4.6.0",
     "@eslint/config-helpers": "0.5.2",
-    "@eslint/eslintrc": "3.3.3",
+    "@eslint/eslintrc": "3.3.4",
     "@eslint/js": "10.0.1",
     "@stylistic/eslint-plugin": "5.9.0",
     "@types/express": "5.0.6",
