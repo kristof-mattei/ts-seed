@@ -4,7 +4,6 @@ import { codecovVitePlugin } from "@codecov/vite-plugin";
 import type { UserConfig } from "vite";
 import { loadEnv } from "vite";
 import { checker } from "vite-plugin-checker";
-import viteTsConfigPaths from "vite-tsconfig-paths";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
 export default defineConfig(({ mode }) => {
@@ -32,10 +31,10 @@ export default defineConfig(({ mode }) => {
             alias: {
                 "@/": nodePath.resolve(import.meta.dirname, "src/"),
             },
+            tsconfigPaths: true,
         },
         plugins: [
             checker({ typescript: true }),
-            viteTsConfigPaths(),
             codecovVitePlugin({
                 enableBundleAnalysis: environment["GITHUB_ACTIONS"] === "true",
                 bundleName: "ts-seed",
