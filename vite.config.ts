@@ -18,7 +18,7 @@ export default defineConfig(({ mode }) => {
                 formats: ["es"],
             },
             minify: false,
-            target: "esnext",
+            target: "node24",
             emptyOutDir: true,
             sourcemap: true,
             rollupOptions: {
@@ -28,9 +28,6 @@ export default defineConfig(({ mode }) => {
             },
         },
         resolve: {
-            alias: {
-                "@/": nodePath.resolve(import.meta.dirname, "src/"),
-            },
             tsconfigPaths: true,
         },
         plugins: [
