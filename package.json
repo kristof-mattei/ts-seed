@@ -1,10 +1,17 @@
 {
-  "name": "ts-seed-web",
-  "version": "1.0.1",
-  "main": "dist/index.js",
+  "private": false,
+  "name": "ts-seed",
+  "version": "0.0.0",
+  "author": "Kristof Mattei",
   "license": "MIT",
+  "description": "TS Seed Project",
   "type": "module",
-  "packageManager": "pnpm@10.32.1",
+  "main": "dist/index.js",
+  "packageManager": "pnpm@10.32.1+sha512.a706938f0e89ac1456b6563eab4edf1d1faf3368d1191fc5c59790e96dc918e4456ab2e67d613de1043d2e8c81f87303e6b40d4ffeca9df15ef1ad567348f2be",
+  "engines": {
+    "node": "24.14.0",
+    "pnpm": "10.32.1"
+  },
   "scripts": {
     "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
     "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
@@ -13,16 +20,20 @@
     "lint:fix": "pnpm run lint --fix",
     "format": "prettier --write .",
     "test": "vitest --coverage.enabled=true",
-    "test:ci": "vitest --coverage.enabled=true --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly",
-    "deps": "depcruise --config dependency-cruiser.config.mjs",
-    "deps:ci": "pnpm run deps --output-type err src",
-    "deps:graph": "pnpm run deps --output-type dot src | dot -T svg > dependency-graph.svg",
-    "deps:report": "pnpm run deps --output-type err-html --output-to dependency-report.html src",
+    "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
+    "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
+    "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
+    "prepare": "husky",
     "start": "node -r source-map-support/register ./dist/index.js"
   },
-  "engines": {
-    "node": "24.14.0",
-    "pnpm": "10.32.1"
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "depcruise --config dependency-cruiser.config.mjs --validate -- "
+    ],
+    "*": [
+      "eslint -- ",
+      "prettier --ignore-unknown --"
+    ]
   },
   "dependencies": {
     "express": "5.2.1",
@@ -32,11 +43,12 @@
     "@codecov/vite-plugin": "1.9.1",
     "@eslint-community/eslint-plugin-eslint-comments": "4.7.1",
     "@eslint/config-helpers": "0.5.3",
-    "@eslint/eslintrc": "3.3.5",
     "@eslint/js": "10.0.1",
     "@stylistic/eslint-plugin": "5.10.0",
+    "@types/eslint": "9.6.1",
     "@types/express": "5.0.6",
     "@types/node": "24.12.0",
+    "@types/semver": "7.7.1",
     "@types/source-map-support": "0.5.10",
     "@typescript-eslint/parser": "8.57.0",
     "@vitest/coverage-v8": "4.1.0",
@@ -53,6 +65,7 @@
     "eslint-plugin-prettier": "5.5.5",
     "eslint-plugin-promise": "7.2.1",
     "eslint-plugin-unicorn": "63.0.0",
+    "husky": "9.1.7",
     "lint-staged": "16.3.3",
     "prettier": "3.8.1",
     "typescript": "5.9.3",
@@ -64,14 +77,10 @@
     "vite-tsconfig-paths": "6.1.1",
     "vitest": "4.1.0"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint -- ",
-      "depcruise --config dependency-cruiser.config.mjs --validate -- "
-    ],
-    "*": [
-      "prettier --ignore-unknown --check --"
-    ]
-  },
-  "overrides": {}
+  "pnpm": {
+    "overrides": {
+      "@codecov/vite-plugin>vite": "^8.0.0",
+      "undici": "^6.24.0"
+    }
+  }
 }
