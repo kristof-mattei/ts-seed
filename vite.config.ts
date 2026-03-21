@@ -4,24 +4,26 @@ import { codecovVitePlugin } from "@codecov/vite-plugin";
 import type { UserConfig } from "vite";
 import { loadEnv } from "vite";
 import { checker } from "vite-plugin-checker";
+import type { ViteUserConfigFn } from "vitest/config";
 import { coverageConfigDefaults, defineConfig } from "vitest/config";
 
-export default defineConfig(({ mode }) => {
+const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
     const environment = loadEnv(mode, process.cwd(), "");
 
     const config: UserConfig = {
         appType: "custom",
         build: {
-            ssr: true,
             lib: {
                 entry: nodePath.resolve(import.meta.dirname, "src/index.ts"),
+                fileName: "index",
                 formats: ["es"],
             },
             minify: false,
             target: "node24",
             emptyOutDir: true,
             sourcemap: true,
-            rollupOptions: {
+            ssr: true,
+            rolldownOptions: {
                 output: {
                     preserveModules: true,
                 },
@@ -66,3 +68,5 @@ export default defineConfig(({ mode }) => {
 
     return config;
 });
+
+export default configFunction;

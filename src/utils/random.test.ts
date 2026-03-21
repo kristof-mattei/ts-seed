@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
 
-import { getRandomIntInclusive } from "@/utils/random.ts";
+import { getRandomIntInclusive } from "../utils/random";
 
 test("getRandomIntInclusive", () => {
     Math.random = vi.fn(() => {
