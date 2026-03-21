@@ -1,9 +1,9 @@
 import type { Express } from "express";
 import express from "express";
 
-import { contents } from "@/resources/solarSystem.json" with { type: "json" };
+import { contents } from "./resources/solarSystem.json" with { type: "json" };
 
-import { getRandomIntInclusive } from "@/utils/random.ts";
+import { getRandomIntInclusive } from "./utils/random";
 
 export function createApp(): Express {
     const app = express();
