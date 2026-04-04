@@ -50,6 +50,10 @@ if (import.meta.hot !== undefined) {
         return server.close();
     };
 
-    import.meta.hot.accept(close);
-    import.meta.hot.dispose(close);
+    import.meta.hot.accept(() => {
+        close();
+    });
+    import.meta.hot.dispose(() => {
+        close();
+    });
 }
