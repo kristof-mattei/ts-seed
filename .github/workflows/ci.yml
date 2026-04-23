@@ -74,6 +74,8 @@ jobs:
     if: ${{ !startsWith(github.head_ref, 'release/') }}
     needs:
       - warm-up-cache
+    permissions:
+      id-token: write
     steps:
       - *checkout
 
@@ -86,8 +88,6 @@ jobs:
         shell: bash
         run: |
           pnpm install --frozen-lockfile
-
-          git diff
 
       - name: Run build
         shell: bash
