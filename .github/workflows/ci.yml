@@ -85,7 +85,9 @@ jobs:
         name: Download dependencies from cache
         shell: bash
         run: |
-          pnpm install --frozen-lockfile --offline
+          pnpm install --frozen-lockfile
+
+          git diff
 
       - name: Run build
         shell: bash
