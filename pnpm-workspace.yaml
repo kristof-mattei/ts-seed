@@ -1,0 +1,5 @@
+allowBuilds:
+  unrs-resolver: false
+overrides:
+  "@codecov/vite-plugin>vite": "$vite"
+  "undici": "8.2.0"
