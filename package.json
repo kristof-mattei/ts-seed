@@ -8,7 +8,7 @@
     "main": "dist/index.js",
     "packageManager": "pnpm@11.2.2+sha512.36e6621fad506178936455e70247b8808ef4ec25797a9f437a93281a020484e2607f6a469a22e982987c3dbb8866e3071514ab10a4a1749e06edcd1ec118436f",
     "engines": {
-        "node": "24.16.0",
+        "node": "26.2.0",
         "pnpm": "11.2.2"
     },
     "scripts": {
@@ -22,7 +22,6 @@
         "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
         "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
         "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
-        "prepare": "husky",
         "start": "node -r source-map-support/register ./dist/index.js"
     },
     "lint-staged": {
@@ -48,7 +47,7 @@
         "@stylistic/eslint-plugin": "5.10.0",
         "@types/eslint": "9.6.1",
         "@types/express": "5.0.6",
-        "@types/node": "24.12.4",
+        "@types/node": "25.9.1",
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
         "@typescript-eslint/parser": "8.59.4",
@@ -66,7 +65,6 @@
         "eslint-plugin-prettier": "5.5.5",
         "eslint-plugin-promise": "7.3.0",
         "eslint-plugin-unicorn": "64.0.0",
-        "husky": "9.1.7",
         "jiti": "2.7.0",
         "lint-staged": "17.0.5",
         "prettier": "3.8.3",
