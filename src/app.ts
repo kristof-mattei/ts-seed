@@ -22,7 +22,7 @@ export type App = FastifyInstance<
 >;
 
 export function createApp(): App {
-    const app = Fastify().withTypeProvider<TypeBoxTypeProvider>();
+    const app = Fastify({ logger: true }).withTypeProvider<TypeBoxTypeProvider>();
 
     const Root = Type.Object({
         message: Type.String(),
