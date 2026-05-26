@@ -1,6 +1,6 @@
-import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 
+import type { App } from "./app";
 import { createApp } from "./app";
 import { eventLoopChecker } from "./utils/event-loop-checker";
 
@@ -8,10 +8,15 @@ eventLoopChecker((cycleTime: number) => {
     console.log(`We waited for ${cycleTime}`);
 });
 
-function main(): Server {
-    const listener = createApp().listen(process.env["API_PORT"] ?? 5000);
+async function main(): Promise<App> {
+    const app = createApp();
 
-    const address = listener.address();
+    await app.listen({
+        host: "::",
+        port: Number(process.env["API_PORT"] ?? 5000),
+    });
+
+    const address = app.server.address();
 
     if (address === null) {
         throw new Error("No address, not listening.");
@@ -19,7 +24,7 @@ function main(): Server {
 
     console.log(`Server listening on ${prettyAddress(address)}`);
 
-    return listener;
+    return app;
 }
 
 function prettyAddress(addressInfo: AddressInfo | string): string {
@@ -42,18 +47,21 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
     return `http://${address}:${addressInfo.port}`;
 }
 
-const server = main();
+const server = await main();
 
 if (import.meta.hot !== undefined) {
-    type Close = () => ReturnType<ReturnType<typeof main>["close"]>;
-    const close: Close = () => {
+    const close = (): Promise<undefined> => {
         return server.close();
     };
 
     import.meta.hot.accept(() => {
-        close();
+        close().catch((error: unknown) => {
+            console.error(error);
+        });
     });
     import.meta.hot.dispose(() => {
-        close();
+        close().catch((error: unknown) => {
+            console.error(error);
+        });
     });
 }

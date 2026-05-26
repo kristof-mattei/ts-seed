@@ -12,8 +12,8 @@
         "pnpm": "11.3.0"
     },
     "scripts": {
-        "debug": "vite-node --inspect=0.0.0.0:9229 src/index.ts",
-        "debug:watch": "vite-node --inspect=0.0.0.0:9229 --watch src/index.ts",
+        "debug": "vite-node src/index.ts",
+        "debug:watch": "vite-node --watch src/index.ts",
         "build": "vite build",
         "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
         "lint:fix": "pnpm run lint --fix",
@@ -34,7 +34,8 @@
         ]
     },
     "dependencies": {
-        "express": "5.2.1",
+        "@fastify/type-provider-typebox": "6.1.0",
+        "fastify": "5.8.5",
         "source-map-support": "0.5.21",
         "tslib": "2.8.1"
     },
@@ -46,7 +47,6 @@
         "@eslint/js": "10.0.1",
         "@stylistic/eslint-plugin": "5.10.0",
         "@types/eslint": "9.6.1",
-        "@types/express": "5.0.6",
         "@types/node": "25.9.1",
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
