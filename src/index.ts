@@ -55,13 +55,22 @@ if (import.meta.hot !== undefined) {
     };
 
     import.meta.hot.accept(() => {
-        close().catch((error: unknown) => {
-            console.error(error);
-        });
+        void (async () => {
+            try {
+                await close();
+            } catch (error: unknown) {
+                console.error(error);
+            }
+        })();
     });
+
     import.meta.hot.dispose(() => {
-        close().catch((error: unknown) => {
-            console.error(error);
-        });
+        void (async () => {
+            try {
+                await close();
+            } catch (error: unknown) {
+                console.error(error);
+            }
+        })();
     });
 }
