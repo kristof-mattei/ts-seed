@@ -1,4 +1,4 @@
-FROM node:26.3.1-alpine3.23@sha256:2af9499b0c797f6d1073bef6b910aac8c69c31889d8c7700cdb509823a237f87 AS base
+FROM node:26.3.1-alpine3.24 AS base
 
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
