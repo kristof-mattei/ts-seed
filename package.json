@@ -52,8 +52,8 @@
         "@types/semver": "7.7.1",
         "@types/source-map-support": "0.5.10",
         "@typescript-eslint/parser": "8.62.1",
-        "@vitest/coverage-v8": "4.1.9",
-        "@vitest/ui": "4.1.9",
+        "@vitest/coverage-v8": "4.1.10",
+        "@vitest/ui": "4.1.10",
         "dependency-cruiser": "18.0.0",
         "eslint": "catalog:default",
         "eslint-config-love": "154.0.0",
@@ -76,6 +76,6 @@
         "vite": "catalog:default",
         "vite-node": "6.0.0",
         "vite-plugin-checker": "0.14.4",
-        "vitest": "4.1.9"
+        "vitest": "4.1.10"
     }
 }
