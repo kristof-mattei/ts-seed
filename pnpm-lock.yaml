@@ -51,7 +51,7 @@ importers:
         specifier: 10.0.1
         version: 10.0.1(eslint@10.8.0(jiti@2.7.0)(supports-color@7.2.0))
       '@eslint/markdown':
-        specifier: ^8.0.3
+        specifier: 8.0.3
         version: 8.0.3(supports-color@7.2.0)
       '@stylistic/eslint-plugin':
         specifier: 5.10.0
@@ -114,7 +114,7 @@ importers:
         specifier: 72.0.0
         version: 72.0.0(eslint@10.8.0(jiti@2.7.0)(supports-color@7.2.0))
       eslint-plugin-yml:
-        specifier: ^3.6.0
+        specifier: 3.6.0
         version: 3.6.0(eslint@10.8.0(jiti@2.7.0)(supports-color@7.2.0))
       jiti:
         specifier: 2.7.0
