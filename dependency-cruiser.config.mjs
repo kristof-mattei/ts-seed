@@ -141,7 +141,7 @@ export default {
                 "section of your package.json. If this module is development only - add it to the " +
                 "from.pathNot re of the not-to-dev-dep rule in the dependency-cruiser configuration",
             from: {
-                path: "^(src)",
+                path: "^(front-end/src)",
                 pathNot: "[.](?:spec|test)[.](?:js|mjs|cjs|jsx|ts|mts|cts|tsx)$",
             },
             to: {
@@ -149,7 +149,7 @@ export default {
                 // type only dependencies are not a problem as they don't end up in the
                 // production code or are ignored by the runtime.
                 dependencyTypesNot: ["type-only"],
-                pathNot: ["node_modules/@types/"],
+                pathNot: [],
             },
         },
         {
