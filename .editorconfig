@@ -1,0 +1,23 @@
+root = true
+
+[*]
+end_of_line = lf
+
+indent_style = space
+
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+charset = utf-8
+
+[*.sh]
+indent_size = 4
+
+# shfmt settings
+# --language-variant
+shell_variant = bash
+binary_next_line = true
+# --case-indent
+switch_case_indent = true
+space_redirects = true
+keep_padding = true

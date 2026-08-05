@@ -15,22 +15,23 @@
         "debug": "vite-node src/index.ts",
         "debug:watch": "vite-node --watch src/index.ts",
         "build": "vite build",
+        "test": "vitest --coverage.enabled=true",
         "lint": "eslint . --report-unused-disable-directives --max-warnings 0",
         "lint:fix": "pnpm run lint --fix",
+        "prepare": "husky",
         "format": "prettier --write .",
-        "test": "vitest --coverage.enabled=true",
         "deps:ci": "depcruise --config dependency-cruiser.config.mjs --output-type err src",
-        "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > dependency-graph.svg",
-        "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to dependency-report.html src",
+        "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > reports/dependency-graph.svg",
+        "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to reports/dependency-report.html src",
         "start": "node -r source-map-support/register ./dist/index.js"
     },
     "lint-staged": {
         "*.{ts,tsx}": [
-            "eslint --",
-            "depcruise --config dependency-cruiser.config.mjs --validate --"
+            "eslint --report-unused-disable-directives --max-warnings 0 --",
+            "depcruise --config dependency-cruiser.config.mjs --include-only ^front-end/src/ --validate --"
         ],
         "*": [
-            "prettier --ignore-unknown --"
+            "prettier --check --ignore-unknown --"
         ]
     },
     "dependencies": {
@@ -67,6 +68,7 @@
         "eslint-plugin-promise": "7.3.0",
         "eslint-plugin-unicorn": "73.0.0",
         "eslint-plugin-yml": "3.7.0",
+        "husky": "9.1.7",
         "jiti": "2.7.0",
         "lint-staged": "17.3.0",
         "prettier": "3.9.6",
