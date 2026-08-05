@@ -58,11 +58,13 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
                 // node: {},
             },
             globals: false,
+            mockReset: true,
             outputFile: {
                 junit: "./reports/results.xml",
             },
             restoreMocks: true,
             setupFiles: ["./test.setup.ts"],
+            unstubEnvs: true,
             unstubGlobals: true,
         },
     };
