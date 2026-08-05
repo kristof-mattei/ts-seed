@@ -142,7 +142,7 @@ const config: ReturnType<typeof defineConfig> = defineConfig(
             "eslint-comments": commentsPlugin,
             perfectionist,
         },
-        extends: [promise.configs["flat/recommended"]],
+        extends: [promise.configs["flat/recommended"], importPluginsFlatConfigs.react],
         rules: {
             ...flattenRules(tseslintConfigs.strictTypeCheckedOnly),
 
