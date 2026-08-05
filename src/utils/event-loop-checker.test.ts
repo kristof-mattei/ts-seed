@@ -5,13 +5,11 @@ import { eventLoopChecker } from "../utils/event-loop-checker";
 describe("eventLoopChecker", () => {
     beforeEach(() => {
         vi.useFakeTimers();
-
-        performance.now = vi.fn(() => {
-            return 0;
-        });
     });
 
     it("eventLoopChecker has sane defaults", () => {
+        const nowSpy = vi.spyOn(performance, "now").mockReturnValue(0);
+
         let lastStall = 0;
 
         const eventLoopCheckerReference = eventLoopChecker((stall) => {
@@ -19,9 +17,7 @@ describe("eventLoopChecker", () => {
         });
 
         // now we stall for 100ms
-        performance.now = vi.fn(() => {
-            return 100;
-        });
+        nowSpy.mockReturnValue(100);
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -34,6 +30,8 @@ describe("eventLoopChecker", () => {
     });
 
     it("eventLoopChecker defaults triggers over 130", () => {
+        const nowSpy = vi.spyOn(performance, "now").mockReturnValue(0);
+
         let lastStall = 0;
 
         const eventLoopCheckerReference = eventLoopChecker((stall) => {
@@ -41,9 +39,7 @@ describe("eventLoopChecker", () => {
         });
 
         // now we stall for 100ms
-        performance.now = vi.fn(() => {
-            return 131;
-        });
+        nowSpy.mockReturnValue(131);
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -54,6 +50,8 @@ describe("eventLoopChecker", () => {
     });
 
     it("eventLoopChecker with no threshold", () => {
+        const nowSpy = vi.spyOn(performance, "now").mockReturnValue(0);
+
         let lastStall = 0;
 
         const eventLoopCheckerReference = eventLoopChecker(
@@ -65,9 +63,7 @@ describe("eventLoopChecker", () => {
         );
 
         // now we stall for 101ms
-        performance.now = vi.fn(() => {
-            return 101;
-        });
+        nowSpy.mockReturnValue(101);
 
         // tick event loop
         vi.advanceTimersToNextTimer();
@@ -78,6 +74,8 @@ describe("eventLoopChecker", () => {
     });
 
     it("eventLoopChecker with treshold returns stall over interval without removing treshold", () => {
+        const nowSpy = vi.spyOn(performance, "now").mockReturnValue(0);
+
         let lastStall = 0;
 
         const eventLoopCheckerReference = eventLoopChecker(
@@ -89,9 +87,7 @@ describe("eventLoopChecker", () => {
         );
 
         // now we stall for 101ms
-        performance.now = vi.fn(() => {
-            return 150;
-        });
+        nowSpy.mockReturnValue(150);
 
         // tick event loop
         vi.advanceTimersToNextTimer();
