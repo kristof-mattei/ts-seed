@@ -28,7 +28,7 @@
     "lint-staged": {
         "*.{ts,tsx}": [
             "eslint --report-unused-disable-directives --max-warnings 0 --",
-            "depcruise --config dependency-cruiser.config.mjs --include-only ^front-end/src/ --validate --"
+            "depcruise --config dependency-cruiser.config.mjs --include-only ^src/ --validate --"
         ],
         "*": [
             "prettier --check --ignore-unknown --"
