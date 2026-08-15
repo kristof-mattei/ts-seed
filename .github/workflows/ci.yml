@@ -75,6 +75,7 @@ jobs:
     needs:
       - warm-up-cache
     permissions:
+      contents: read
       id-token: write
     steps:
       - *checkout
