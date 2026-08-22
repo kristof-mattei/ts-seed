@@ -1,16 +1,11 @@
 {
     "name": "ts-seed",
     "version": "0.0.0",
-    "author": "Kristof Mattei",
-    "license": "MIT",
     "description": "TS Seed Project",
+    "license": "MIT",
+    "author": "Kristof Mattei",
     "type": "module",
     "main": "dist/index.js",
-    "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
-    "engines": {
-        "node": "26.7.0",
-        "pnpm": "11.22.0"
-    },
     "scripts": {
         "debug": "vite-node src/index.ts",
         "debug:watch": "vite-node --watch src/index.ts",
@@ -24,15 +19,6 @@
         "deps:graph": "depcruise --config dependency-cruiser.config.mjs --output-type dot src | dot -T svg > reports/dependency-graph.svg",
         "deps:report": "depcruise --config dependency-cruiser.config.mjs --output-type err-html --output-to reports/dependency-report.html src",
         "start": "node -r source-map-support/register ./dist/index.js"
-    },
-    "lint-staged": {
-        "*.{ts,tsx}": [
-            "eslint --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --",
-            "depcruise --config dependency-cruiser.config.mjs --include-only ^src/ --validate --"
-        ],
-        "*": [
-            "prettier --check --ignore-unknown --"
-        ]
     },
     "dependencies": {
         "@fastify/type-provider-typebox": "6.1.0",
@@ -80,5 +66,19 @@
         "vite-node": "6.0.0",
         "vite-plugin-checker": "0.14.5",
         "vitest": "4.1.11"
-    }
+    },
+    "lint-staged": {
+        "*.{ts,tsx}": [
+            "eslint --report-unused-disable-directives --max-warnings 0 --no-warn-ignored --",
+            "depcruise --config dependency-cruiser.config.mjs --include-only ^src/ --validate --"
+        ],
+        "*": [
+            "prettier --check --ignore-unknown --"
+        ]
+    },
+    "engines": {
+        "node": "26.7.0",
+        "pnpm": "11.22.0"
+    },
+    "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
 }
