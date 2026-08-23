@@ -48,7 +48,7 @@ const configFunction: ViteUserConfigFn = defineConfig(({ mode }) => {
         },
         test: {
             coverage: {
-                exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.mjs"],
+                exclude: [...coverageConfigDefaults.exclude, "./dependency-cruiser.config.ts"],
                 reporter: ["json", "html", "text", "lcov"],
                 provider: "v8",
                 reportsDirectory: "reports",
