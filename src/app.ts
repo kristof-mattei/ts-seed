@@ -7,10 +7,9 @@ import type {
     RawRequestDefaultExpression,
     RawServerDefault,
 } from "fastify";
-import Fastify from "fastify";
+import fastify from "fastify";
 
 import { contents } from "./resources/solarSystem.json" with { type: "json" };
-
 import { getRandomIntInclusive } from "./utils/random";
 
 export type App = FastifyInstance<
@@ -22,7 +21,7 @@ export type App = FastifyInstance<
 >;
 
 export function createApp(): App {
-    const app = Fastify({
+    const app = fastify({
         logger: {
             transport: {
                 target: "pino-pretty", // probably don't want this in production
@@ -45,7 +44,7 @@ export function createApp(): App {
             },
         },
         (_request, _reply): Root => {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion -- we only get an index inside of `contents.length`.
+            // oxlint-disable-next-line typescript/no-non-null-assertion -- we only get an index inside of `contents.length`.
             const world = contents[getRandomIntInclusive(0, contents.length - 1)]!;
 
             return { message: `Hello ${world}!` };

@@ -3,11 +3,11 @@ import { performance } from "node:perf_hooks";
 import { describe, expect, it } from "vitest";
 
 import { createApp } from "../app";
-import { Foo } from "../service/foo";
+import { foo } from "../service/foo";
 
 describe("a", () => {
     it("foo is bar", () => {
-        expect(Foo()).toBe("Bar");
+        expect(foo()).toBe("Bar");
     });
 });
 

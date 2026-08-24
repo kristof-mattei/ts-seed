@@ -1,7 +1,9 @@
+#!/usr/bin/env node
 import type { AddressInfo } from "node:net";
 
 import type { App } from "./app";
 import { createApp } from "./app";
+import { config } from "./config";
 import { eventLoopChecker } from "./utils/event-loop-checker";
 
 eventLoopChecker((cycleTime: number) => {
@@ -13,7 +15,7 @@ async function main(): Promise<App> {
 
     await app.listen({
         host: "::",
-        port: Number(process.env["API_PORT"] ?? 5000),
+        port: config.API_PORT,
     });
 
     const address = app.server.address();
@@ -33,7 +35,7 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
         return addressInfo;
     }
 
-    let address = addressInfo.address;
+    let { address } = addressInfo;
 
     if (addressInfo.family.toLowerCase() === "ipv6") {
         address = `[${addressInfo.address}]`;
@@ -55,7 +57,7 @@ if (import.meta.hot !== undefined) {
     };
 
     import.meta.hot.accept(() => {
-        void (async () => {
+        void (async (): Promise<void> => {
             try {
                 await close();
             } catch (error: unknown) {
@@ -65,7 +67,7 @@ if (import.meta.hot !== undefined) {
     });
 
     import.meta.hot.dispose(() => {
-        void (async () => {
+        void (async (): Promise<void> => {
             try {
                 await close();
             } catch (error: unknown) {
