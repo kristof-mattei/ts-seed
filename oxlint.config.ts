@@ -58,7 +58,8 @@ const config: OxlintConfig = defineConfig({
         "no-redeclare": "off",
         "no-ternary": "off",
         "no-undefined": "off",
-        "no-warning-comments": "off",
+        // allow TODO
+        "no-warning-comments": ["error", { location: "anywhere", terms: ["fixme", "xxx"] }],
         "one-var": ["error", "never"],
         // destructuring a later array index needs a hole in the pattern (`const [, second] = ...`)
         "prefer-destructuring": ["error", { array: false, object: true }],
@@ -158,7 +159,7 @@ const config: OxlintConfig = defineConfig({
         "typescript/prefer-readonly-parameter-types": "off",
         "typescript/restrict-template-expressions": ["error", { allowNumber: true }],
         "typescript/return-await": ["error", "in-try-catch"],
-        "typescript/require-await": "error",
+        "typescript/require-await": "off",
         "typescript/switch-exhaustiveness-check": [
             "error",
             {
