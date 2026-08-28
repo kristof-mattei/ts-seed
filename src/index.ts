@@ -7,6 +7,7 @@ import { config } from "./config";
 import { eventLoopChecker } from "./utils/event-loop-checker";
 
 eventLoopChecker((cycleTime: number) => {
+    // oxlint-disable-next-line no-console -- logging
     console.log(`We waited for ${cycleTime}`);
 });
 
@@ -24,6 +25,7 @@ async function main(): Promise<App> {
         throw new Error("No address, not listening.");
     }
 
+    // oxlint-disable-next-line no-console -- logging
     console.log(`Server listening on ${prettyAddress(address)}`);
 
     return app;
@@ -52,7 +54,7 @@ function prettyAddress(addressInfo: AddressInfo | string): string {
 const server = await main();
 
 if (import.meta.hot !== undefined) {
-    const close = (): Promise<undefined> => {
+    const close = async (): Promise<undefined> => {
         return server.close();
     };
 
