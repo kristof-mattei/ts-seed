@@ -1,9 +1,11 @@
 import { performance } from "node:perf_hooks";
 
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { createApp } from "../app";
 import { foo } from "../service/foo";
+
+vi.setConfig({ testTimeout: 1000 });
 
 describe("a", () => {
     it("foo is bar", () => {

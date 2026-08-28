@@ -20,6 +20,7 @@ export type App = FastifyInstance<
     TypeBoxTypeProvider
 >;
 
+// oxlint-disable-next-line max-lines-per-function -- example
 export function createApp(): App {
     const app = fastify({
         logger: {
