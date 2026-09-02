@@ -1,5 +1,10 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["github>kristof-mattei/renovate-config"],
-    "forkProcessing": "enabled"
+    "forkProcessing": "enabled",
+    "extends": [
+        "github>kristof-mattei/renovate-config",
+        "github>kristof-mattei/renovate-config//docker/updateGithubReleaseAssetsInDockerfile",
+        "github>kristof-mattei/renovate-config//github-actions/nonSemver",
+        "github>kristof-mattei/renovate-config//node/groupOxcPackages"
+    ]
 }
