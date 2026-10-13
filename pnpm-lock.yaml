@@ -176,8 +176,8 @@ importers:
   .:
     dependencies:
       '@fastify/type-provider-typebox':
-        specifier: 6.2.0
-        version: 6.2.0(ajv-formats@3.0.1)(typebox@1.3.34)
+        specifier: 6.3.0
+        version: 6.3.0(ajv-formats@3.0.1)(typebox@1.3.34)
       env-schema:
         specifier: 8.0.1
         version: 8.0.1
@@ -358,8 +358,8 @@ packages:
   '@fastify/proxy-addr@5.1.1':
     resolution: {integrity: sha512-zv07Y9GEuDsJPegZoDFd4SDWaZOW8N2pa0GSrYmKpId/tjt1Hgo3BjZBVjdVpfVrHaA+Qv5jawtS2O50J5xM9g==}
 
-  '@fastify/type-provider-typebox@6.2.0':
-    resolution: {integrity: sha512-atChgjMPHqP/1WphOlN5tMt3qOpolDyedbdDIw91wIoZxku3x1p+bqLKqhXNoaTFX2tqT56LeuIKYH5BDutDFA==}
+  '@fastify/type-provider-typebox@6.3.0':
+    resolution: {integrity: sha512-zsaoyyAdNvkuf2HOMJvf7vykRTFA/1M9J3HC0vHNtFhxNhwL36iDJl/2Tpl0XzMR0f0aATSeDV20ChH720wXYQ==}
     peerDependencies:
       ajv-formats: ^3.0.1
       typebox: ^1.1.14
@@ -2162,7 +2162,7 @@ snapshots:
       '@fastify/forwarded': 3.0.2
       ipaddr.js: 2.5.0
 
-  '@fastify/type-provider-typebox@6.2.0(ajv-formats@3.0.1)(typebox@1.3.34)':
+  '@fastify/type-provider-typebox@6.3.0(ajv-formats@3.0.1)(typebox@1.3.34)':
     dependencies:
       ajv-formats: 3.0.1
       typebox: 1.3.34
@@ -2570,10 +2570,6 @@ snapshots:
 
   acorn-jsx-walk@2.0.0: {}
 
-  acorn-jsx@5.3.2(acorn@8.18.0):
-    dependencies:
-      acorn: 8.18.0
-
   acorn-jsx@5.3.2(acorn@8.19.0):
     dependencies:
       acorn: 8.19.0
@@ -2822,8 +2818,8 @@ snapshots:
 
   espree@11.2.0:
     dependencies:
-      acorn: 8.18.0
-      acorn-jsx: 5.3.2(acorn@8.18.0)
+      acorn: 8.19.0
+      acorn-jsx: 5.3.2(acorn@8.19.0)
       eslint-visitor-keys: 5.0.1
 
   esquery@1.7.0:
