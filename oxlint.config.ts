@@ -49,7 +49,7 @@ const config: OxlintConfig = defineConfig({
         "max-params": ["error", { max: 4 }],
         "max-statements": ["error", { max: 25 }],
         // typebox's builders are capitalised functions
-        "new-cap": ["error", { capIsNewExceptionPattern: "^Type\\." }],
+        "new-cap": ["error", { capIsNewExceptionPattern: String.raw`^Type\.` }],
         "no-alert": "error",
         "no-console": ["error", { allow: ["error", "warn"] }],
         "no-duplicate-imports": ["error", { allowSeparateTypeImports: true }],
