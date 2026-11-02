@@ -1,0 +1,248 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Build TypeScript
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  warm-up-cache:
+    name: Warm up the cache
+    runs-on: ubuntu-26.04
+    steps:
+      - &checkout
+        name: Check out code
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
+
+      - &install_pnpm
+        name: Install pnpm
+        uses: pnpm/action-setup@v6.1.0
+
+      - &setup_node
+        name: Set up node
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: package.json
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          pnpm install --frozen-lockfile
+
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+      pull-requests: read # dorny/paths-filter reads the PR's changed files
+    outputs:
+      typescript: ${{ steps.filter.outputs.typescript }}
+    steps:
+      - *checkout
+
+      - name: Check if we actually made changes
+        uses: dorny/paths-filter@v4.0.3
+        id: filter
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          filters: .github/file-filters.yml
+
+  npm-build:
+    name: Build the code
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+      id-token: write # the codecov plugin in vite.config.ts authenticates over OIDC during the build
+    needs:
+      - warm-up-cache
+    steps:
+      - *checkout
+
+      - *install_pnpm
+
+      - *setup_node
+
+      - &install_dependencies_from_cache
+        name: Install dependencies
+        shell: bash
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Run build
+        shell: bash
+        run: |
+          pnpm run build
+
+  npm-lint:
+    name: Lint the code
+    runs-on: ubuntu-26.04
+    permissions:
+      contents: read
+    needs:
+      - changes
+      - warm-up-cache
+    if: |
+      github.event_name == 'pull_request' &&
+      fromJSON(needs.changes.outputs.typescript) == true
+    steps:
+      - *checkout
+
+      - *install_pnpm
+
+      - *setup_node
+
+      - *install_dependencies_from_cache
+
+      - name: Run lint
+        shell: bash
+        run: |
+          pnpm run lint --format=github
+
+  npm-test:
+    name: Test the code
+    runs-on: ubuntu-26.04
+    needs:
+      - warm-up-cache
+    permissions:
+      checks: write # publish-unit-test-result-action creates a check run
+      contents: read
+      id-token: write # codecov-action authenticates over OIDC
+      issues: read # publish-unit-test-result-action needs this in private repos
+      pull-requests: write # publish-unit-test-result-action comments the test summary
+    steps:
+      - *checkout
+
+      - *install_pnpm
+
+      - *setup_node
+
+      - *install_dependencies_from_cache
+
+      - name: Run Vitest
+        shell: bash
+        id: tests
+        continue-on-error: true
+        run: |
+          pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
+
+      - name: Upload test results
+        # fork PRs run with a read-only token, which cannot create check runs or PR comments
+        if: |
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: EnricoMi/publish-unit-test-result-action@v2.25.0
+        with:
+          check_name: Test results for TypeScript
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            reports/results.xml
+
+      - name: Record Node and Typescript version
+        shell: bash
+        run: |
+          echo "NODE=$(node --version)" >> "$GITHUB_ENV"
+          echo "TYPESCRIPT=$(pnpm tsc --version)" >> "$GITHUB_ENV"
+
+      - name: Upload coverage results (to Codecov.io)
+        # fork PRs run without id-token, so OIDC upload cannot work. Push runs must keep uploading to preserve base coverage
+        if: |
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: codecov/codecov-action@v7.1.1
+        with:
+          disable_search: true
+          disable_telem: true
+          env_vars: RUNNER_OS,NODE,TYPESCRIPT
+          fail_ci_if_error: true
+          files: reports/lcov.info
+          name: code-coverage
+          plugins: ""
+          report_type: "coverage"
+          use_oidc: true
+
+      - name: Upload test results (to Codecov.io)
+        if: |
+          github.event_name != 'pull_request' ||
+          github.event.pull_request.head.repo.full_name == github.repository
+        uses: codecov/codecov-action@v7.1.1
+        with:
+          disable_search: true
+          disable_telem: true
+          env_vars: RUNNER_OS,NODE,TYPESCRIPT
+          fail_ci_if_error: true
+          files: reports/results.xml
+          name: test-results
+          plugins: ""
+          report_type: "test_results"
+          use_oidc: true
+
+      - name: Fail if tests failed
+        shell: bash
+        if: |
+          steps.tests.outcome != 'success'
+        run: |
+          echo "Tests failed"
+          exit 1
+
+  npm-dependencies:
+    name: Validate dependencies
+    runs-on: ubuntu-26.04
+    needs:
+      - changes
+      - warm-up-cache
+    if: |
+      github.event_name == 'pull_request' &&
+      fromJSON(needs.changes.outputs.typescript) == true
+    steps:
+      - *checkout
+
+      - *install_pnpm
+
+      - *setup_node
+
+      - *install_dependencies_from_cache
+
+      - name: Check dependencies
+        shell: bash
+        run: |
+          pnpm run deps:ci
+
+  all-done:
+    name: TypeScript All done
+    # this is the job that should be marked as required on GitHub. It's the only one that'll reliably trigger
+    # when any upstream fails: success
+    # when any upstream fails or is cancelled: failure
+    # when all upstream skips: success
+    # combination of upstream skip and success: success
+    runs-on: ubuntu-slim
+    permissions: {}
+    needs:
+      - changes
+      - npm-build
+      - npm-dependencies
+      - npm-lint
+      - npm-test
+      - warm-up-cache
+    if: |
+      !cancelled()
+    steps:
+      - name: Fail!
+        shell: bash
+        if: |
+          contains(needs.*.result, 'failure') ||
+          contains(needs.*.result, 'cancelled')
+        run: |
+          echo "One / more upstream failed or was cancelled. Failing job..."
+          exit 1
+
+      - name: Success!
+        shell: bash
+        run: |
+          echo "Great success!"

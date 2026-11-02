@@ -1,0 +1,10 @@
+# Ignore all
+*
+
+# And explicitly include...
+!/package.json
+!/pnpm-lock.yaml
+!/pnpm-workspace.yaml
+!/src
+!/tsconfig.json
+!/vite.config.ts
