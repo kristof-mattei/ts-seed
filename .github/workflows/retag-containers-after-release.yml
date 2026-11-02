@@ -1,0 +1,220 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Retag container after release
+
+on:
+  release:
+    types:
+      - released
+
+concurrency:
+  group: "${{ github.workflow }}"
+  cancel-in-progress: false # last one must win in case of multiple releases
+
+permissions:
+  contents: read
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  DOCKERHUB_IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE_NAME }}
+
+jobs:
+  repo-has-container:
+    name: Repo has container?
+    runs-on: ubuntu-26.04
+    outputs:
+      has_container: ${{ steps.determine.outputs.has_container }}
+
+    steps:
+      - name: Repo has docker container?
+        id: determine
+        shell: bash
+        env:
+          HAS_CONTAINER: ${{ vars.HAS_CONTAINER }}
+        run: |
+          echo "has_container=${HAS_CONTAINER:-false}" >> "${GITHUB_OUTPUT}"
+
+  retag-containers:
+    name: Retag the containers
+    runs-on: ubuntu-26.04
+    environment:
+      name: ghcr-io
+      url: https://github.com/${{ github.repository }}/pkgs/container/${{ github.event.repository.name }}/${{ steps.source.outputs.package_version_id }}?tag=${{ github.event.release.tag_name }}
+    permissions:
+      artifact-metadata: write # actions/attest
+      attestations: write # actions/attest
+      contents: read
+      id-token: write # actions/attest
+      packages: write # retag images in ghcr.io
+    needs:
+      - repo-has-container
+    outputs:
+      digest: ${{ steps.digest.outputs.digest }}
+    if: |
+      fromJSON(needs.repo-has-container.outputs.has_container) == true
+    steps:
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5.6.0
+        with:
+          daemon-config: |
+            {
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4.4.1
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v4.7.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+
+      - name: Set full image name
+        shell: bash
+        run: |
+          echo "FULL_IMAGE_NAME=${REGISTRY,,}/${IMAGE_NAME,,}" >> "${GITHUB_ENV}"
+
+      - name: Find source tag using GitHub CLI
+        id: source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          repo_lower="${GITHUB_REPOSITORY,,}"
+
+          # the push-triggered retag workflow creates the source tag and may still be running, so poll for it
+          match=""
+
+          for attempt in $(seq 1 30); do
+            if ((attempt > 1)); then
+              sleep 30
+            fi
+
+            echo "Looking for source tag sha-${GITHUB_SHA}-* (attempt ${attempt} of 30)"
+
+            # no match yet and a transient api error both mean retry, so don't fail here
+            match=$(gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages/container/${repo_lower##*/}/versions" \
+              --paginate \
+              --jq '.[] | (.id | tostring) + " " + .metadata.container.tags[]' | grep " sha-${GITHUB_SHA}-.*\$" | head --lines 1) || true # .* is actual or retag
+
+            if [ -n "${match}" ]; then
+              break
+            fi
+          done
+
+          if [ -z "${match}" ]; then
+            echo "::error::No matching source tag found for SHA ${GITHUB_SHA}"
+            exit 1
+          fi
+
+          echo "OLD_TAG=${match#* }" >> "${GITHUB_ENV}"
+          # re-tagging adds the release tags to the source tag's package version
+          echo "package_version_id=${match%% *}" >> "${GITHUB_OUTPUT}"
+
+      - name: Set the new TAGs
+        id: meta
+        uses: docker/metadata-action@v6.2.0
+        with:
+          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          tags: |
+            type=raw,value=latest
+            type=semver,pattern={{version}},prefix=v
+
+      - name: Get image digest
+        shell: bash
+        id: digest
+        run: |
+          digest=$(docker buildx imagetools inspect "${FULL_IMAGE_NAME}:${OLD_TAG}" --format "{{json .}}" | jq --raw-output ".manifest.digest")
+          echo "digest=${digest}" >> "${GITHUB_OUTPUT}"
+
+      - name: Actually re-tag the container
+        shell: bash
+        env:
+          NEW_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          echo "${NEW_TAGS}" | while IFS= read -r new_tag
+            do
+              docker buildx imagetools create --tag "${new_tag}" "${FULL_IMAGE_NAME}:${OLD_TAG}"
+          done
+
+      - name: Attest GHCR image
+        uses: actions/attest@v4.2.2
+        with:
+          subject-name: ${{ env.FULL_IMAGE_NAME }}
+          subject-digest: ${{ steps.digest.outputs.digest }}
+          push-to-registry: true
+
+  copy-to-docker-hub:
+    name: Copy the container to Docker Hub
+    runs-on: ubuntu-26.04
+    environment:
+      name: docker-io
+      url: https://hub.docker.com/r/${{ vars.DOCKERHUB_IMAGE_NAME }}/tags?name=${{ github.event.release.tag_name }}
+    permissions:
+      artifact-metadata: write # actions/attest
+      attestations: write # actions/attest
+      contents: read
+      id-token: write # actions/attest
+      packages: read # pull the source image from ghcr.io
+    needs:
+      - retag-containers
+    if: |
+      vars.DOCKERHUB_IMAGE_NAME != ''
+    steps:
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v4.7.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+
+      - name: Log into Docker Hub
+        uses: docker/login-action@v4.7.0
+        with:
+          registry: docker.io
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set full image names
+        shell: bash
+        run: |
+          echo "FULL_IMAGE_NAME=${REGISTRY,,}/${IMAGE_NAME,,}" >> "${GITHUB_ENV}"
+          echo "FULL_DOCKERHUB_IMAGE_NAME=docker.io/${DOCKERHUB_IMAGE_NAME,,}" >> "${GITHUB_ENV}"
+
+      - name: Set the new Docker Hub TAGs
+        id: meta-dockerhub
+        uses: docker/metadata-action@v6.2.0
+        with:
+          images: "docker.io/${{ env.DOCKERHUB_IMAGE_NAME }}"
+          tags: |
+            type=raw,value=latest
+            type=semver,pattern={{version}},prefix=v
+
+      - name: Copy the container to Docker Hub
+        shell: bash
+        env:
+          DIGEST: ${{ needs.retag-containers.outputs.digest }}
+          NEW_TAGS: ${{ steps.meta-dockerhub.outputs.tags }}
+        run: |
+          echo "${NEW_TAGS}" | while IFS= read -r new_tag
+            do
+              if [ "$(skopeo inspect --format '{{ .Digest }}' --no-tags "docker://${new_tag}" 2>/dev/null)" = "${DIGEST}" ]; then
+                echo "${new_tag} already exists, skipping"
+                continue
+              fi
+
+              skopeo copy --all --preserve-digests --command-timeout 70s --retry-times 5 "docker://${FULL_IMAGE_NAME}@${DIGEST}" "docker://${new_tag}"
+          done
+
+      - name: Attest Docker Hub image
+        uses: actions/attest@v4.2.2
+        with:
+          subject-name: ${{ env.FULL_DOCKERHUB_IMAGE_NAME }}
+          subject-digest: ${{ needs.retag-containers.outputs.digest }}
+          push-to-registry: true

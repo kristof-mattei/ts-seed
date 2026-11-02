@@ -1,9 +1,14 @@
-code:
+shared: &shared
   - ".github/**"
+docker:
+  - *shared
+  - ".dockerignore"
   - Dockerfile
-  - "src/**"
+typescript:
+  - *shared
   - "**/*.ts"
-  - "tsconfig.json"
+  - "src/**"
   - "package.json"
   - "pnpm-lock.yaml"
   - "pnpm-workspace.yaml"
+  - "tsconfig.json"

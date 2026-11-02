@@ -1,0 +1,239 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Retag containers after new push / PR
+
+on:
+  # Triggers the workflow pushes to main. They can be either direct pushes, or PRs being merged
+  push:
+    branches:
+      - main
+
+  # note how we're not doing
+  # pull_request_target, as it isn't what we need.
+  # we need the push event to make it show up nicely in the UI
+  # this however brings a whole new slew of problems, like how do we identify the
+  # incoming PR's artifacts?
+  # well, we set a tag on that PR's artifact, in the form of
+  # pr-{head_of_pr}-{pr_head_of_main}
+  # when with git rev-parse HEAD^2 we can find the incoming PR's head
+  # Problem solved
+
+concurrency:
+  group: "${{ github.workflow }}" # last one must win
+  cancel-in-progress: false # no we need them
+
+permissions:
+  contents: read
+
+env:
+  # set this to true in GitHub variables to enable building the container
+  # HAS_CONTAINER: true
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  DOCKERHUB_IMAGE_NAME: ${{ vars.DOCKERHUB_IMAGE_NAME }}
+
+jobs:
+  repo-has-container:
+    name: Repo has container?
+    runs-on: ubuntu-26.04
+    outputs:
+      has_container: ${{ steps.determine.outputs.has_container }}
+
+    steps:
+      - name: Repo has docker container?
+        id: determine
+        shell: bash
+        env:
+          HAS_CONTAINER: ${{ vars.HAS_CONTAINER }}
+        run: |
+          echo "has_container=${HAS_CONTAINER:-false}" >> "${GITHUB_OUTPUT}"
+
+  retag-containers:
+    name: Retag the containers
+    runs-on: ubuntu-26.04
+    permissions:
+      artifact-metadata: write # actions/attest
+      attestations: write # actions/attest
+      contents: read
+      id-token: write # actions/attest
+      packages: write # retag images in ghcr.io
+    needs:
+      - repo-has-container
+    if: |
+      fromJSON(needs.repo-has-container.outputs.has_container) == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
+          fetch-depth: 2
+
+      - name: Resolve base and PR head SHAs
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: |
+          # push event, HEAD^2 is the tip of the incoming PR branch
+          echo "BASE_SHA=${BEFORE_SHA}" >> "${GITHUB_ENV}"
+
+          exit_code=0
+          # a commit always has a parent, but if it has 2, the commit is a merge
+          # so lets see if we have one
+          # since we're listening to the push event we have to do this manually
+          parent2=$(git rev-parse "HEAD^2" --quiet 2>/dev/null) || exit_code=$?
+
+          if [ ${exit_code} -eq 0 ]
+          then
+            echo "The head of the incoming PR is ${parent2}"
+            echo "INCOMING_PR_HEAD_COMMIT=${parent2}" >> "${GITHUB_ENV}"
+          else
+            echo "The incoming push isn't a merge, ergo it's not a PR"
+          fi
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v5.6.0
+        with:
+          daemon-config: |
+            {
+              "features": {
+                "containerd-snapshotter": true
+              }
+            }
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4.4.1
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v4.7.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+
+      - name: Log into Docker Hub
+        if: env.DOCKERHUB_IMAGE_NAME != ''
+        uses: docker/login-action@v4.7.0
+        with:
+          registry: docker.io
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set full image name
+        shell: bash
+        run: |
+          echo "FULL_IMAGE_NAME=${REGISTRY,,}/${IMAGE_NAME,,}" >> "${GITHUB_ENV}"
+          echo "FULL_DOCKERHUB_IMAGE_NAME=docker.io/${DOCKERHUB_IMAGE_NAME,,}" >> "${GITHUB_ENV}"
+
+      - name: Find source tag using GitHub CLI
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_TAG: "pr-${{ env.BASE_SHA }}-${{ env.INCOMING_PR_HEAD_COMMIT }}"
+        run: |
+          repo_lower="${GITHUB_REPOSITORY,,}"
+
+          all_tags=$(gh api "/users/${GITHUB_REPOSITORY_OWNER}/packages/container/${repo_lower##*/}/versions" \
+            --paginate \
+            --jq '.[] | .metadata.container.tags[]')
+
+          # search for the PR tag, there can only be zero or one match
+          pr_tag_found=$(echo "${all_tags}" | grep -c "^${PR_TAG}\$") || true
+
+          if [ "${pr_tag_found}" -eq 1 ]
+          then
+            echo "Incoming PR produced a Docker image"
+
+            echo "OLD_TAG=${PR_TAG}" >> "${GITHUB_ENV}"
+            echo "SUFFIX=actual" >> "${GITHUB_ENV}"
+          elif grep --quiet --extended-regexp "^pr-[0-9a-f]{40}-${INCOMING_PR_HEAD_COMMIT}\$" <<< "${all_tags}"
+          then
+            # the base commit's image lacks the incoming PR's changes
+            echo "::error::The image for ${INCOMING_PR_HEAD_COMMIT} was built against a base other than ${BASE_SHA}"
+            exit 1
+          else
+            # If we don't have an old tag, then the incoming PR didn't produce a container.
+            # In which case we're going to find the container referenced to the base commit, and add our current sha as a tag to it
+
+            echo "Incoming PR produced nothing, or there was just a push to main"
+
+            # so we find the last commit that github processed before this one
+            # which will have gone through the same retagging process
+            # and use that sha as our key to find the Docker container related to that commit
+            old_tag=$(echo "${all_tags}" | grep "^sha-${BASE_SHA}-.*\$") || true # .* is actual or retag
+
+            if [ -z "${old_tag}" ]
+            then
+              echo "::error::No matching source tag found for base SHA ${BASE_SHA}"
+              exit 1
+            fi
+
+            echo "OLD_TAG=${old_tag}" >> "${GITHUB_ENV}"
+            echo "SUFFIX=retag" >> "${GITHUB_ENV}"
+          fi
+
+      - name: Set the new TAGs
+        id: meta
+        uses: docker/metadata-action@v6.2.0
+        with:
+          images: "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}"
+          flavor: |
+            latest=false
+          tags: |
+            type=edge,branch=main
+            type=sha,format=long,prefix=sha-,suffix=-${{ env.SUFFIX }}
+
+      - name: Set the new Docker Hub TAGs
+        if: env.DOCKERHUB_IMAGE_NAME != ''
+        id: meta-dockerhub
+        uses: docker/metadata-action@v6.2.0
+        with:
+          images: "docker.io/${{ env.DOCKERHUB_IMAGE_NAME }}"
+          flavor: |
+            latest=false
+          tags: |
+            type=edge,branch=main
+
+      - name: Get image digest
+        shell: bash
+        id: digest
+        run: |
+          digest=$(docker buildx imagetools inspect "${FULL_IMAGE_NAME}:${OLD_TAG}" --format "{{json .}}" | jq --raw-output ".manifest.digest")
+          echo "digest=${digest}" >> "${GITHUB_OUTPUT}"
+
+      - name: Actually re-tag the container
+        shell: bash
+        env:
+          NEW_TAGS: ${{ steps.meta.outputs.tags }}
+        run: |
+          echo "${NEW_TAGS}" | while IFS= read -r new_tag
+            do
+              docker buildx imagetools create --tag "${new_tag}" "${FULL_IMAGE_NAME}:${OLD_TAG}"
+          done
+
+      - name: Attest GHCR image
+        uses: actions/attest@v4.2.2
+        with:
+          subject-name: ${{ env.FULL_IMAGE_NAME }}
+          subject-digest: ${{ steps.digest.outputs.digest }}
+          push-to-registry: true
+
+      - name: Copy the container to Docker Hub
+        if: env.DOCKERHUB_IMAGE_NAME != ''
+        shell: bash
+        env:
+          NEW_TAGS: ${{ steps.meta-dockerhub.outputs.tags }}
+        run: |
+          echo "${NEW_TAGS}" | while IFS= read -r new_tag
+            do
+              skopeo copy --all --preserve-digests --command-timeout 70s --retry-times 5 "docker://${FULL_IMAGE_NAME}:${OLD_TAG}" "docker://${new_tag}"
+          done
+
+      - name: Attest Docker Hub image
+        if: env.DOCKERHUB_IMAGE_NAME != ''
+        uses: actions/attest@v4.2.2
+        with:
+          subject-name: ${{ env.FULL_DOCKERHUB_IMAGE_NAME }}
+          subject-digest: ${{ steps.digest.outputs.digest }}
+          push-to-registry: true

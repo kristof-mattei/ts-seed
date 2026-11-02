@@ -5,7 +5,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN npm uninstall --global corepack && npm install --global corepack
 
 WORKDIR /app
-COPY package.json pnpm-lock.yaml vite.config.ts tsconfig.json ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml vite.config.ts tsconfig.json ./
 
 # install the corepack our package requires
 RUN corepack install

@@ -5,6 +5,8 @@
         "github>kristof-mattei/renovate-config",
         "github>kristof-mattei/renovate-config//docker/updateGithubReleaseAssetsInDockerfile",
         "github>kristof-mattei/renovate-config//github-actions/nonSemver",
-        "github>kristof-mattei/renovate-config//node/groupOxcPackages"
+        "github>kristof-mattei/renovate-config//node/groupNodeDockerImage",
+        "github>kristof-mattei/renovate-config//node/groupOxcPackages",
+        "github>kristof-mattei/renovate-config//node/updateEnginesNodeInPackageJson"
     ]
 }

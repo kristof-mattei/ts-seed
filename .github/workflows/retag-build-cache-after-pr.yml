@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Retag build cache after PR
+
+on:
+  # Triggers the workflow pushes to main. They can be either direct pushes, or PRs being merged
+  push:
+    branches:
+      - main
+
+  # note how we're not doing
+  # pull_request_target, as it isn't what we need.
+  # we need the push event to make it show up nicely in the UI
+  # this however brings a whole new slew of problems, like how do we identify the
+  # incoming PR's artifacts?
+  # in this workflow, build cache images for PRs are tagged as
+  # buildcache-pr-{pr_number}-...
+  # the incoming PR's image identifies its PR number, and we retag that PR's build cache images accordingly
+  # Problem solved
+
+concurrency:
+  group: "${{ github.workflow }}"
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_VARIANTS: |-
+    arm64
+    amd64
+  REGISTRY: ghcr.io
+
+jobs:
+  repo-has-container:
+    name: Repo has container?
+    runs-on: ubuntu-slim
+    outputs:
+      has_container: ${{ steps.determine.outputs.has_container }}
+    steps:
+      - name: Repo has docker container?
+        id: determine
+        shell: bash
+        env:
+          HAS_CONTAINER: ${{ vars.HAS_CONTAINER }}
+        run: |
+          echo "has_container=${HAS_CONTAINER:-false}" >> "${GITHUB_OUTPUT}"
+
+  architectures:
+    name: Build matrix
+    runs-on: ubuntu-slim
+    outputs:
+      architectures: ${{ steps.matrix.outputs.architectures }}
+    steps:
+      - name: Build matrix
+        uses: actions/github-script@v9.0.0
+        id: matrix
+        with:
+          script: |
+            const architectures = process.env.IMAGE_VARIANTS.trim().split("\n").map((a) => a.trim());
+
+            const json = JSON.stringify(architectures);
+
+            core.setOutput("architectures", json);
+
+  retag-build-cache-main:
+    name: Retag build cache for ${{ matrix.platform }}
+    strategy:
+      matrix:
+        platform: ${{ fromJSON(needs.architectures.outputs.architectures) }}
+    # the cache refs include the runner's architecture, so this runs on the same runner as `docker-build` in `ci.yml`
+    runs-on: ${{ matrix.platform == 'arm64' && 'ubuntu-26.04-arm' || 'ubuntu-26.04' }}
+    permissions:
+      contents: read
+      packages: write # retag build cache images in ghcr.io
+    needs:
+      - architectures
+      - repo-has-container
+    if: |
+      fromJSON(needs.repo-has-container.outputs.has_container) == true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
+          fetch-depth: 2
+
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v4.7.0
+        with:
+          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+
+      - name: Retag PR build cache as main build cache
+        shell: bash
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+          PLATFORM: ${{ matrix.platform }}
+        run: |
+          platform_no_slashes="${PLATFORM//\//-}"
+
+          image_name="${IMAGE_NAME,,}"
+          registry="${REGISTRY,,}"
+
+          runner_arch="${RUNNER_ARCH,,}"
+
+          target_ref="${registry}/${image_name}-cache:buildcache-main-${runner_arch}-${platform_no_slashes}"
+
+          parent2=$(git rev-parse "HEAD^2" --quiet 2>/dev/null) || true
+
+          # ci.yml publishes the incoming PR's image under this tag, with the PR's URL as its source annotation
+          image_ref="${registry}/${image_name}:pr-${BEFORE_SHA}-${parent2}"
+
+          if ! pr_url=$(skopeo inspect --raw --command-timeout 70s --retry-times 5 "docker://${image_ref}" 2>/dev/null | jq --raw-output '.annotations["org.opencontainers.image.source"]'); then
+            echo "Incoming PR produced no image, or there was just a push to main, skipping cache retag"
+            exit 0
+          fi
+
+          source_ref="${registry}/${image_name}-cache:buildcache-pr-${pr_url##*/}-${runner_arch}-${platform_no_slashes}"
+
+          echo "Checking if source cache exists: ${source_ref}"
+          if ! skopeo inspect --raw --command-timeout 70s --retry-times 5 "docker://${source_ref}" > /dev/null 2>&1; then
+            echo "PR build cache not found (PR may not have changed Docker/TypeScript files), skipping"
+
+            exit 0
+          fi
+
+          echo "Retagging ${source_ref} -> ${target_ref}"
+
+          skopeo copy --all --preserve-digests --command-timeout 70s --retry-times 5 "docker://${source_ref}" "docker://${target_ref}"

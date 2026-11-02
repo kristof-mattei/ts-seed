@@ -75,7 +75,7 @@ describe("eventLoopChecker", () => {
         clearTimeout(eventLoopCheckerReference);
     });
 
-    it("eventLoopChecker with treshold returns stall over interval without removing treshold", () => {
+    it("eventLoopChecker with threshold returns stall over interval without removing threshold", () => {
         const nowSpy = vi.spyOn(performance, "now").mockReturnValue(0);
 
         let lastStall = 0;
