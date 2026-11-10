@@ -6,7 +6,6 @@ workflows:
     '.github/workflows/actionlint.yml':
         - 'actions/checkout@v7.0.1'
         - 'kjanat/actionlint@v1.17.1'
-        - 'taiki-e/install-action@v2.90.3'
     '.github/workflows/apply-changelog-selection.yml':
         - 'actions/checkout@v7.0.1'
         - 'taiki-e/install-action@v2.90.3'
