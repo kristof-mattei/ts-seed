@@ -17,6 +17,7 @@ headgreen
 jscoverage
 jsons
 jspm
+kjanat
 kristof
 lcovonly
 makemake
