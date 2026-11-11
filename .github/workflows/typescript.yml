@@ -132,24 +132,42 @@ jobs:
         run: |
           pnpm run test --reporter=default --reporter=github-actions --reporter=junit --coverage.reporter=text --coverage.reporter=lcovonly
 
-      - name: Upload test results
-        # fork PRs run with a read-only token, which cannot create check runs or PR comments
-        if: |
-          github.event_name != 'pull_request' ||
-          github.event.pull_request.head.repo.full_name == github.repository
-        uses: EnricoMi/publish-unit-test-result-action@v2.26.0
-        with:
-          check_name: Test results for TypeScript
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          files: |
-            reports/results.xml
-
       - name: Record Node and Typescript version
         shell: bash
         run: |
           echo "NODE=$(node --version)" >> "$GITHUB_ENV"
           echo "TYPESCRIPT=$(pnpm tsc --version)" >> "$GITHUB_ENV"
 
+      - parallel:
+          - name: Upload test results
+            # fork PRs run with a read-only token, which cannot create check runs or PR comments
+            if: |
+              github.event_name != 'pull_request' ||
+              github.event.pull_request.head.repo.full_name == github.repository
+            uses: EnricoMi/publish-unit-test-result-action@v2.26.0
+            with:
+              check_name: Test results for TypeScript
+              github_token: ${{ secrets.GITHUB_TOKEN }}
+              files: |
+                reports/results.xml
+
+          - name: Upload test results (to Codecov.io)
+            if: |
+              github.event_name != 'pull_request' ||
+              github.event.pull_request.head.repo.full_name == github.repository
+            uses: codecov/codecov-action@v7.1.1
+            with:
+              disable_search: true
+              disable_telem: true
+              env_vars: RUNNER_OS,NODE,TYPESCRIPT
+              fail_ci_if_error: true
+              files: reports/results.xml
+              name: test-results
+              plugins: ""
+              report_type: "test_results"
+              use_oidc: true
+
+      # the two Codecov.io uploads fail when run in parallel
       - name: Upload coverage results (to Codecov.io)
         # fork PRs run without id-token, so OIDC upload cannot work. Push runs must keep uploading to preserve base coverage
         if: |
@@ -165,22 +183,6 @@ jobs:
           name: code-coverage
           plugins: ""
           report_type: "coverage"
-          use_oidc: true
-
-      - name: Upload test results (to Codecov.io)
-        if: |
-          github.event_name != 'pull_request' ||
-          github.event.pull_request.head.repo.full_name == github.repository
-        uses: codecov/codecov-action@v7.1.1
-        with:
-          disable_search: true
-          disable_telem: true
-          env_vars: RUNNER_OS,NODE,TYPESCRIPT
-          fail_ci_if_error: true
-          files: reports/results.xml
-          name: test-results
-          plugins: ""
-          report_type: "test_results"
           use_oidc: true
 
       - name: Fail if tests failed
@@ -217,9 +219,9 @@ jobs:
   all-done:
     name: TypeScript All done
     # this is the job that should be marked as required on GitHub. It's the only one that'll reliably trigger
-    # when any upstream fails: success
     # when any upstream fails or is cancelled: failure
     # when all upstream skips: success
+    # when all upstream success: success
     # combination of upstream skip and success: success
     runs-on: ubuntu-slim
     permissions: {}
