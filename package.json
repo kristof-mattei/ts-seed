@@ -24,7 +24,7 @@
     },
     "dependencies": {
         "@fastify/type-provider-typebox": "6.3.0",
-        "env-schema": "8.0.1",
+        "env-schema": "8.0.2",
         "fastify": "5.12.8",
         "pino-pretty": "13.2.0",
         "source-map-support": "0.5.21"
