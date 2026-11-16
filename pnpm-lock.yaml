@@ -188,8 +188,8 @@ importers:
         specifier: 6.3.0
         version: 6.3.0(ajv-formats@3.0.1)(typebox@1.4.6)
       env-schema:
-        specifier: 8.0.1
-        version: 8.0.1
+        specifier: 8.0.2
+        version: 8.0.2
       fastify:
         specifier: 5.12.8
         version: 5.12.8
@@ -1429,8 +1429,8 @@ packages:
     resolution: {integrity: sha512-pxP8eL2SwwaTRi/KHYwLYXinDs7gL3jxFcBYmEdYfZmZXbaVDvdppd0XBU8qVz03rDfKZMXg1omHCbsJjZrMsw==}
     engines: {node: '>=20'}
 
-  env-schema@8.0.1:
-    resolution: {integrity: sha512-VKqpgL3EPCnSRVsUyi+aPHbS+OJKFsqoNoT/sxSKowhyGMvqd9TgaUTZsMYFmIYTLT/tkj02HpuWXP9eCb377Q==}
+  env-schema@8.0.2:
+    resolution: {integrity: sha512-s74K92gIRbxlG3KG4CdqQimK1yaFmtrNsBsa+3dsVbtzkE+83L96i3u+HUdAOwjwq54cacaR9FilAU5q/+QdOw==}
 
   es-errors@1.3.0:
     resolution: {integrity: sha512-Zf5H2Kxt2xjTvbJvP2ZWLEICxA6j+hAmMzIlypy4xcBg1vKVnx89Wy0GbS+kf5cwCVFFzdCFh2XSCFNULS6csw==}
@@ -3433,7 +3433,7 @@ snapshots:
     dependencies:
       is-safe-filename: 0.1.1
 
-  env-schema@8.0.1:
+  env-schema@8.0.2:
     dependencies:
       ajv: 8.20.0
 
