@@ -22,7 +22,7 @@ workflows:
         - 'docker/setup-buildx-action@v4.4.1'
         - 'docker/setup-docker-action@v5.7.0'
         - 'dorny/paths-filter@v4.0.3'
-        - 'oras-project/setup-oras@v2.0.3'
+        - 'oras-project/setup-oras@v2.0.4'
         - 'taiki-e/install-action@v2.90.6'
     '.github/workflows/compare-release-image.yml':
         - 'docker/login-action@v4.8.0'
@@ -169,9 +169,9 @@ dependencies:
         commit: 'sha1-220b76cfa568e00ed8b3c476898f849a722b88e2'
         owner_id: 6353477
         repo_id: 1326162482
-    'oras-project/setup-oras@v2.0.3':
-        ref: 'v2.0.3'
-        commit: 'sha1-5e2f2482b30b0cb3e14e67f89a80c88c659a7c63'
+    'oras-project/setup-oras@v2.0.4':
+        ref: 'v2.0.4'
+        commit: 'sha1-ac735097e22fe643015b0d19645f7c9a69942128'
         owner_id: 81890686
         repo_id: 590286646
     'pnpm/action-setup@v6.1.1':
