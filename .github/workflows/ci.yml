@@ -180,7 +180,7 @@ jobs:
         uses: $/.github/actions/calculate-next-version
 
       - name: Set up ORAS
-        uses: oras-project/setup-oras@v2.0.3
+        uses: oras-project/setup-oras@v2.0.4
 
       - name: Log into registry ${{ env.REGISTRY }}
         shell: bash
